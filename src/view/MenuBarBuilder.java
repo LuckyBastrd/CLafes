@@ -6,14 +6,14 @@ import javafx.scene.control.MenuItem;
 
 public class MenuBarBuilder {
 
-	public static MenuBar createMenuBar(String UserRole) {
+	public static MenuBar createMenuBar(String userRole) {
         MenuBar menuBar = new MenuBar();
         
         Menu menu = new Menu("Menu");
         
         menuBar.getMenus().addAll(menu);
         
-        switch (UserRole) {
+        switch (userRole) {
 		case "Admin":
 			menu.getItems().addAll(ViewAllPC(), ViewAllStaff(), PCManagement(), 
 					JobManagement(), TransactionHistory(), ViewAllReport()
@@ -69,6 +69,10 @@ public class MenuBarBuilder {
     
     private static MenuItem ViewTechnicianJob() {
     	MenuItem viewTechnicianJob = new MenuItem("View All Job");
+    	
+    	viewTechnicianJob.setOnAction(e -> {
+    		
+    	});
     	
     	return viewTechnicianJob;
     }

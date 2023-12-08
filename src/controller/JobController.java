@@ -1,13 +1,10 @@
-package controller;
-
-import database.Connect;
-
-public class JobController {
-	
-	Connect connect = Connect.getInstance();
-
-	public JobController() {
-		// TODO Auto-generated constructor stub
-	}
-
-}
+//package controller;
+//
+//import database.Connect;
+//import view.TechnicianJobPage.JobVariable;
+//
+//public class JobController {
+//	
+//	Connect connect = Connect.getInstance();
+//
+//}
