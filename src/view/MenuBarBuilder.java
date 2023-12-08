@@ -3,20 +3,28 @@ package view;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
+import model.User;
 
 public class MenuBarBuilder {
-
-	public static MenuBar createMenuBar(String userRole) {
+	
+	public static MenuBar createMenuBar(Stage stage, User user) {
         MenuBar menuBar = new MenuBar();
         
         Menu menu = new Menu("Menu");
         
         menuBar.getMenus().addAll(menu);
         
-        switch (userRole) {
+        switch (user.getUserrole()) {
 		case "Admin":
-			menu.getItems().addAll(ViewAllPC(), ViewAllStaff(), PCManagement(), 
-					JobManagement(), TransactionHistory(), ViewAllReport()
+			menu.getItems().addAll(
+					HomePage(stage, user),
+					ViewAllPC(), 
+					ViewAllStaff(stage, user), 
+					PCManagement(), 
+					JobManagement(), 
+					TransactionHistory(), 
+					ViewAllReport()
 			);
 			break;
 
@@ -43,6 +51,16 @@ public class MenuBarBuilder {
 	
 	
 	// All Menu Item
+    private static MenuItem HomePage(Stage stage, User user) {
+        MenuItem homePage = new MenuItem("Home Page");
+        
+        homePage.setOnAction(e -> {
+    		new HomePage(stage, user);
+    	});
+        
+        return homePage;
+    }
+	
     private static MenuItem ViewAllPC() {
         MenuItem viewAllPC = new MenuItem("View All PC");
         
@@ -70,10 +88,6 @@ public class MenuBarBuilder {
     private static MenuItem ViewTechnicianJob() {
     	MenuItem viewTechnicianJob = new MenuItem("View All Job");
     	
-    	viewTechnicianJob.setOnAction(e -> {
-    		
-    	});
-    	
     	return viewTechnicianJob;
     }
     
@@ -89,8 +103,12 @@ public class MenuBarBuilder {
     	return assignUsertoAnotherPC;
     }
     
-    private static MenuItem ViewAllStaff() {
+    private static MenuItem ViewAllStaff(Stage stage, User user) {
     	MenuItem viewAllStaff = new MenuItem("View All Staff");
+    	
+    	viewAllStaff.setOnAction(e -> {
+    		new ManageStaffPage(stage, user);
+    	});
     	
     	return viewAllStaff;
     }

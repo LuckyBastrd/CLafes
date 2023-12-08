@@ -1,17 +1,27 @@
 package model;
 
 public class User {
+	private Integer userID;
 	private String username;
-	private String password;
-	private Integer age;
-	private String role;
+	private String userpassword;
+	private Integer userage;
+	private String userrole;
 	
-	public User(String username, String password, Integer age, String role) {
+	public User(Integer userID, String username, String userpassword, Integer userage, String userrole) {
 		super();
+		this.userID = userID;
 		this.username = username;
-		this.password = password;
-		this.age = age;
-		this.role = role;
+		this.userpassword = userpassword;
+		this.userage = userage;
+		this.userrole = userrole;
+	}
+
+	public Integer getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Integer userID) {
+		this.userID = userID;
 	}
 
 	public String getUsername() {
@@ -22,27 +32,27 @@ public class User {
 		this.username = username;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getUserpassword() {
+		return userpassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUserpassword(String userpassword) {
+		this.userpassword = userpassword;
 	}
 
-	public Integer getAge() {
-		return age;
+	public Integer getUserage() {
+		return userage;
 	}
 
-	public void setAge(Integer age) {
-		this.age = age;
+	public void setUserage(Integer userage) {
+		this.userage = userage;
 	}
 
-	public String getRole() {
-		return role;
+	public String getUserrole() {
+		return userrole;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setUserrole(String userrole) {
+		this.userrole = userrole;
 	}
 }
