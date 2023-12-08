@@ -29,26 +29,36 @@ public class MenuBarBuilder {
 			break;
 
 		case "Customer":
-			menu.getItems().addAll(ViewAllPC(), TransactionHistory(), BookPC(), 
+			menu.getItems().addAll(
+					HomePage(stage, user),
+					ViewAllPC(), 
+					TransactionHistory(), 
+					BookPC(), 
 					MakeReport()
 			);
 			break;
 			
 		case "Operator":
-			menu.getItems().addAll(ViewAllPC(), MakeReport(), ViewPCBooked(), 
+			menu.getItems().addAll(
+					HomePage(stage, user),
+					ViewAllPC(), 
+					MakeReport(), 
+					ViewPCBooked(), 
 					AssignUsertoAnotherPC()
 			);
 			break;
 			
 		case "Computer Technician":
-			menu.getItems().addAll(ViewAllPC(), ViewTechnicianJob());
+			menu.getItems().addAll(
+					HomePage(stage, user),
+					ViewAllPC(), 
+					ViewTechnicianJob(stage, user)
+			);
 			break;
 		}
 
         return menuBar;
     }
-	
-	
 	
 	// All Menu Item
     private static MenuItem HomePage(Stage stage, User user) {
@@ -85,8 +95,12 @@ public class MenuBarBuilder {
     	return Makereport;
     }
     
-    private static MenuItem ViewTechnicianJob() {
+    private static MenuItem ViewTechnicianJob(Stage stage, User user) {
     	MenuItem viewTechnicianJob = new MenuItem("View All Job");
+    	
+    	viewTechnicianJob.setOnAction(e -> {
+    		new TechnicianJobPage(stage, user);
+    	});
     	
     	return viewTechnicianJob;
     }

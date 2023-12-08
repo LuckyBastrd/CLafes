@@ -40,7 +40,7 @@ public class ManageStaffPage {
 		manageStaffPageVariables.staffTable = new TableView<>();
 		manageStaffPageVariables.staffTableVB = new VBox();
 
-		TableColumn<User, String> idColumn = new TableColumn<>("Staff ID");
+		TableColumn<User, Integer> idColumn = new TableColumn<>("Staff ID");
 		TableColumn<User, String> nameColumn = new TableColumn<>("Staff Name");
 		TableColumn<User, String> roleColumn = new TableColumn<>("Staff Role");
 
@@ -58,7 +58,7 @@ public class ManageStaffPage {
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 		roleColumn.setCellValueFactory(new PropertyValueFactory<>("userrole"));
 
-		manageStaffPageVariables.staffTable.setMaxHeight(150);
+		manageStaffPageVariables.staffTable.setMinHeight(70);
 		idColumn.setMinWidth(300);
 		nameColumn.setMinWidth(426);
 		roleColumn.setMinWidth(426);

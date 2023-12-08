@@ -16,7 +16,7 @@ public class UserController {
 	public ArrayList<User> getStaffData() {
 		ArrayList<User> staffList = new ArrayList<>();
 
-		String query = "SELECT `UserID`, `UserName`, `UserRole` FROM `user` WHERE `UserRole` != 'Customer';";
+		String query = "SELECT `UserID`, `UserName`, `UserRole` FROM `user` WHERE `UserRole` != 'Customer'";
 
 		ResultSet rs = con.selectData(query);
 
@@ -35,8 +35,6 @@ public class UserController {
 	}
 
 	public void HandlingUpdateStaff(ManageStaffPageVariables manageStaffPageVariables) {
-
-		Connect con = Connect.getInstance();
 
 		String query = "UPDATE User SET UserRole = ? WHERE UserID = ?";
 
