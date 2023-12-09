@@ -6,6 +6,7 @@ import model.User;
 import view.HomePage;
 import view.JobManagement;
 import view.TechnicianJobPage;
+import view.ViewAllReportPage;
 
 public class Main extends Application {
 	@Override
@@ -16,7 +17,8 @@ public class Main extends Application {
 		
 		User user = new User(userID, userName, "123", 12, userRole);
 		
-	    new HomePage(primaryStage, user);
+	    //new HomePage(primaryStage, user);
+		new ViewAllReportPage(primaryStage, user);
 	}
 	
 	public static void main(String[] args) {

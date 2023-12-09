@@ -24,7 +24,7 @@ public class MenuBarBuilder {
 					PCManagement(), 
 					JobManagement(), 
 					TransactionHistory(), 
-					ViewAllReport()
+					ViewAllReport(stage, user)
 			);
 			break;
 
@@ -140,8 +140,12 @@ public class MenuBarBuilder {
     }
  
     
-    private static MenuItem ViewAllReport() {
+    private static MenuItem ViewAllReport(Stage stage, User user) {
     	MenuItem viewAllReport = new MenuItem("View All Report");
+    	
+    	viewAllReport.setOnAction(e -> {
+    		new ViewAllReportPage(stage, user);
+    	});
     	
     	return viewAllReport;
     }
