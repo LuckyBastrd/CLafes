@@ -32,7 +32,7 @@ public class ManageStaffPage {
 		TableView<User> staffTable;
 		Label titleLabel, userIDLabel, userRoleLabel;
 		public TextField userIDTF, userRoleTF;
-		public Button submitButton;
+		Button submitButton;
 		public Alert alert1, alert2;
 	}
 
@@ -123,7 +123,7 @@ public class ManageStaffPage {
 		UserController userController = new UserController();
 		
 		manageStaffPageVariables.submitButton.setOnAction(e -> {
-			userController.HandlingUpdateStaff(manageStaffPageVariables);
+			userController.handlingUpdateStaff(manageStaffPageVariables);
 			new ManageStaffPage(stage, user);
 		});
 	}

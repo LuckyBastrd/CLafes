@@ -31,8 +31,8 @@ public class TechnicianJobPage {
 		GridPane gridPane;
 		VBox titleVB, techJobTableVB, contentVB;
 		TableView<Job> techJobTable;
-		Label titleLabel, jobIDLabel;
-		public TextField jobIDTF;
+		Label titleLabel, pcIDLabel;
+		public TextField pcIDTF;
 		public Button completeButton;
 		public Alert alert1, alert2;
 	}
@@ -41,12 +41,12 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.techJobTable = new TableView<>();
 		technicianJobPageVariables.techJobTableVB = new VBox();
 		
-		TableColumn<Job, Integer> jobIDColumn = new TableColumn<>("Job ID");
-		TableColumn<Job, Integer> userIDColumn = new TableColumn<>("User ID");
+//		TableColumn<Job, Integer> jobIDColumn = new TableColumn<>("Job ID");
+//		TableColumn<Job, Integer> userIDColumn = new TableColumn<>("User ID");
 		TableColumn<Job, Integer> pcIDColumn = new TableColumn<>("PC ID");
 		TableColumn<Job, String> jobStatusColumn = new TableColumn<>("Job Status");
 		
-		technicianJobPageVariables.techJobTable.getColumns().addAll(jobIDColumn, userIDColumn, pcIDColumn, jobStatusColumn);
+		technicianJobPageVariables.techJobTable.getColumns().addAll(pcIDColumn, jobStatusColumn);
 		
 		JobController jobController = new JobController();
 		
@@ -56,16 +56,14 @@ public class TechnicianJobPage {
 			technicianJobPageVariables.techJobTable.getItems().add(job);
 		}
 		
-		jobIDColumn.setCellValueFactory(new PropertyValueFactory<>("jobID"));
-		userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
+//		jobIDColumn.setCellValueFactory(new PropertyValueFactory<>("jobID"));
+//		userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
 		pcIDColumn.setCellValueFactory(new PropertyValueFactory<>("pcID"));
 		jobStatusColumn.setCellValueFactory(new PropertyValueFactory<>("jobstatus"));
 		
 		technicianJobPageVariables.techJobTable.setMinHeight(50);
-		jobIDColumn.setMinWidth(100);
-		userIDColumn.setMinWidth(320);
-		pcIDColumn.setMinWidth(320);
-		jobStatusColumn.setMinWidth(320);
+		pcIDColumn.setMinWidth(30);
+		jobStatusColumn.setMinWidth(1100);
 		
 		technicianJobPageVariables.techJobTableVB.getChildren().add(technicianJobPageVariables.techJobTable);
 		
@@ -85,15 +83,15 @@ public class TechnicianJobPage {
 		
 		technicianJobPageVariables.titleLabel = new Label("TECHNICIAN JOB PAGE");
 		
-		technicianJobPageVariables.jobIDLabel = new Label("Job ID");
-		technicianJobPageVariables.jobIDTF = new TextField();
+		technicianJobPageVariables.pcIDLabel = new Label("PC ID");
+		technicianJobPageVariables.pcIDTF = new TextField();
 		
 		technicianJobPageVariables.completeButton = new Button("Job Complete");
 		
 		technicianJobPageVariables.titleVB.getChildren().add(technicianJobPageVariables.titleLabel);
 		technicianJobPageVariables.titleVB.setAlignment(Pos.CENTER);
 		
-		technicianJobPageVariables.contentVB.getChildren().addAll(technicianJobPageVariables.jobIDLabel, technicianJobPageVariables.jobIDTF,
+		technicianJobPageVariables.contentVB.getChildren().addAll(technicianJobPageVariables.pcIDLabel, technicianJobPageVariables.pcIDTF,
 																	technicianJobPageVariables.completeButton);
 		technicianJobPageVariables.contentVB.setPadding(new Insets(0, 1000, 0, 30));
 		technicianJobPageVariables.contentVB.setSpacing(13);
@@ -111,12 +109,12 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.alert1 = new Alert(AlertType.ERROR);
 
 		technicianJobPageVariables.alert1.setTitle("Error");
-		technicianJobPageVariables.alert1.setContentText("Job ID Invalid !!!");
+		technicianJobPageVariables.alert1.setContentText("PC ID Invalid !!!");
 		
 		technicianJobPageVariables.alert2 = new Alert(AlertType.ERROR);
 
 		technicianJobPageVariables.alert2.setTitle("Error");
-		technicianJobPageVariables.alert2.setContentText("Job ID Already Completed !!!");
+		technicianJobPageVariables.alert2.setContentText("PC ID Already Completed !!!");
 	}
 	
 	private void UpdateJobStatusHandler(TechnicianJobPageVariables technicianJobPageVariables, Stage stage, User user) {
@@ -130,6 +128,7 @@ public class TechnicianJobPage {
 	
 	private void setStyle(TechnicianJobPageVariables technicianJobPageVariables) {
 		technicianJobPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
+		technicianJobPageVariables.techJobTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
 	public TechnicianJobPage(Stage stage, User user) {

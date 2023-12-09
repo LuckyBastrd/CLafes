@@ -34,7 +34,7 @@ public class MenuBarBuilder {
 					ViewAllPC(), 
 					TransactionHistory(), 
 					BookPC(), 
-					MakeReport()
+					MakeReport(stage, user)
 			);
 			break;
 			
@@ -42,7 +42,7 @@ public class MenuBarBuilder {
 			menu.getItems().addAll(
 					HomePage(stage, user),
 					ViewAllPC(), 
-					MakeReport(), 
+					MakeReport(stage, user), 
 					ViewPCBooked(), 
 					AssignUsertoAnotherPC()
 			);
@@ -89,8 +89,12 @@ public class MenuBarBuilder {
         return bookPC;
     }
     
-    private static MenuItem MakeReport() {
+    private static MenuItem MakeReport(Stage stage, User user) {
     	MenuItem Makereport = new MenuItem("Make Report");
+    	
+    	Makereport.setOnAction(e -> {
+    		new MakeReportPage(stage, user);
+    	});
     	
     	return Makereport;
     }

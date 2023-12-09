@@ -56,14 +56,12 @@ public class ViewAllReportPage {
 		pcIDColumn.setCellValueFactory(new PropertyValueFactory<>("pcID"));
 		reportNoteColumn.setCellValueFactory(new PropertyValueFactory<>("reportnote"));
 		reportDateColumn.setCellValueFactory(new PropertyValueFactory<>("reportdate"));
-		
+			
 		viewAllReportPageVariables.tableVB.setMinHeight(50);
-		reportIDColumn.setMinWidth(150);
-	    userRoleColumn.setMinWidth(270);
-	    pcIDColumn.setMinWidth(270);
-	    reportNoteColumn.setMinWidth(270);
-	    reportDateColumn.setMinWidth(270);
-		
+	    userRoleColumn.setMinWidth(100);
+	    reportNoteColumn.setMinWidth(910);
+	    reportDateColumn.setMinWidth(100);
+	    
 	    viewAllReportPageVariables.tableVB.getChildren().add(viewAllReportPageVariables.allReportTable);
 		
 	    viewAllReportPageVariables.tableVB.setPadding(new Insets(20, 30, 30, 30));
@@ -94,6 +92,7 @@ public class ViewAllReportPage {
 	
 	private void setStyle(ViewAllReportPageVariables viewAllReportPageVariables) {
 		viewAllReportPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
+		viewAllReportPageVariables.allReportTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
 	public ViewAllReportPage(Stage stage, User user) {

@@ -34,7 +34,7 @@ public class UserController {
 		return staffList;
 	}
 
-	public void HandlingUpdateStaff(ManageStaffPageVariables manageStaffPageVariables) {
+	public void handlingUpdateStaff(ManageStaffPageVariables manageStaffPageVariables) {
 
 		String query = "UPDATE User SET UserRole = ? WHERE UserID = ?";
 

@@ -8,7 +8,7 @@ public class Report {
 	private Integer pcID;
 	private String reportnote;
 	private Date reportdate;
-
+	
 	public Report(Integer reportID, String userrole, Integer pcID, String reportnote, Date reportdate) {
 		super();
 		this.reportID = reportID;

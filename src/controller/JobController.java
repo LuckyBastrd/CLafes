@@ -42,14 +42,12 @@ public class JobController {
 	public ArrayList<Job> getTechJobData(User user) {
 		ArrayList<Job> techJobList = new ArrayList<>();
 
-		Integer userid = user.getUserID();
-
 		String query = "SELECT * FROM job WHERE UserID = ?";
 
 		PreparedStatement ps = con.prepareStatment(query);
 
 		try {
-			ps.setInt(1, userid);
+			ps.setInt(1, user.getUserID());
 
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
@@ -70,16 +68,16 @@ public class JobController {
 	}
 
 	public void HandlingUpdateJobStatus(TechnicianJobPageVariables technicianJobPageVariables, User user) {
-		String checkQuery = "SELECT JobStatus FROM Job WHERE Job_ID = ?";
-		String updateQuery = "UPDATE Job SET JobStatus = 'Complete' WHERE Job_ID = ?";
+		String checkQuery = "SELECT JobStatus FROM Job WHERE PC_ID = ?";
+		String updateQuery = "UPDATE Job SET JobStatus = 'Complete' WHERE PC_ID = ?";
 
-		String jobID = technicianJobPageVariables.jobIDTF.getText();
+		String pcID = technicianJobPageVariables.pcIDTF.getText();
 
 		ArrayList<Job> techJobList = getTechJobData(user);
 
 		boolean jobExists = false;
 		for (Job job : techJobList) {
-			if (job.getJobID().toString().equals(jobID)) {
+			if (job.getPcID().toString().equals(pcID)) {
 				jobExists = true;
 				break;
 			}
@@ -89,7 +87,7 @@ public class JobController {
 			try {
 				PreparedStatement psSelect = con.prepareStatment(checkQuery);
 				
-				psSelect.setString(1, jobID);
+				psSelect.setString(1, pcID);
 				
 				ResultSet rs = psSelect.executeQuery();
 
@@ -103,7 +101,7 @@ public class JobController {
 					} else {
 						PreparedStatement psUpdate = con.prepareStatment(updateQuery);
 
-						psUpdate.setString(1, jobID);
+						psUpdate.setString(1, pcID);
 
 						psUpdate.executeUpdate();
 					}

@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import model.User;
 import view.HomePage;
 import view.JobManagement;
+import view.MakeReportPage;
 import view.TechnicianJobPage;
 import view.ViewAllReportPage;
 
