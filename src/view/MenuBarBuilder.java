@@ -23,7 +23,7 @@ public class MenuBarBuilder {
 					ViewAllStaff(stage, user), 
 					PCManagement(), 
 					JobManagement(), 
-					TransactionHistory(), 
+					TransactionHistory(stage, user), 
 					ViewAllReport(stage, user)
 			);
 			break;
@@ -32,7 +32,7 @@ public class MenuBarBuilder {
 			menu.getItems().addAll(
 					HomePage(stage, user),
 					ViewAllPC(), 
-					TransactionHistory(), 
+					TransactionHistory(stage, user), 
 					BookPC(), 
 					MakeReport(stage, user)
 			);
@@ -77,8 +77,12 @@ public class MenuBarBuilder {
         return viewAllPC;
     }
     
-    private static MenuItem TransactionHistory() {
+    private static MenuItem TransactionHistory(Stage stage, User user) {
         MenuItem transactionHistory = new MenuItem("Transaction History");
+        
+        transactionHistory.setOnAction(e -> {
+        	new ViewAllTrHistoryPage(stage, user);
+        });
         
         return transactionHistory;
     }

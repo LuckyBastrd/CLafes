@@ -44,7 +44,7 @@ public class JobController {
 
 		String query = "SELECT * FROM job WHERE UserID = ?";
 
-		PreparedStatement ps = con.prepareStatment(query);
+		PreparedStatement ps = con.prepareStatement(query);
 
 		try {
 			ps.setInt(1, user.getUserID());
@@ -85,7 +85,7 @@ public class JobController {
 
 		if (jobExists) {
 			try {
-				PreparedStatement psSelect = con.prepareStatment(checkQuery);
+				PreparedStatement psSelect = con.prepareStatement(checkQuery);
 				
 				psSelect.setString(1, pcID);
 				
@@ -99,7 +99,7 @@ public class JobController {
 						technicianJobPageVariables.alert2.showAndWait();
 						
 					} else {
-						PreparedStatement psUpdate = con.prepareStatment(updateQuery);
+						PreparedStatement psUpdate = con.prepareStatement(updateQuery);
 
 						psUpdate.setString(1, pcID);
 

@@ -58,7 +58,7 @@ public class Connect {
 		}
 	}
 	
-	public PreparedStatement prepareStatment(String query) {
+	public PreparedStatement prepareStatement(String query) {
 		ps = null;
 		
 		try {

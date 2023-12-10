@@ -8,18 +8,19 @@ import view.JobManagement;
 import view.MakeReportPage;
 import view.TechnicianJobPage;
 import view.ViewAllReportPage;
+import view.ViewAllTrHistoryPage;
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Integer userID = 3;
+		Integer userID = 1;
 		String userName = "John Doe";
-		String userRole = "Computer Technician";
+		String userRole = "Admin";
 		
 		User user = new User(userID, userName, "123", 12, userRole);
 		
 	    //new HomePage(primaryStage, user);
-		new ViewAllReportPage(primaryStage, user);
+		new ViewAllTrHistoryPage(primaryStage, user);
 	}
 	
 	public static void main(String[] args) {

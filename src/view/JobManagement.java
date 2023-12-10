@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import controller.JobController;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -24,6 +26,8 @@ public class JobManagement {
 		GridPane gridPane;
 		VBox titleVB, jobTableVB, contentVB;
 		TableView<Job> jobTable;
+		Label titleLabel, pcIDLabel, userIDLabel, jobStatusLabel;
+		public TextField pcIDTF, userIDTF, jobStatusID;
 	}
 	
 	private void setJobsTableData(JobManagementPageVariables jobManagementPageVariables, User user) {

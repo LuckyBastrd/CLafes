@@ -54,7 +54,7 @@ public class UserController {
 		if (userExists) {
 
 			if (newRole.equals("Admin") || newRole.equals("Operator") || newRole.equals("Computer Technician")) {
-				PreparedStatement ps = con.prepareStatment(query);
+				PreparedStatement ps = con.prepareStatement(query);
 
 				try {
 					ps.setString(1, newRole);

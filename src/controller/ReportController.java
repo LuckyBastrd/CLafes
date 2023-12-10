@@ -65,7 +65,7 @@ public class ReportController {
 		if (pcExists) {
 
 			if (!reportNote.isEmpty()) {
-				PreparedStatement ps = con.prepareStatment(query);
+				PreparedStatement ps = con.prepareStatement(query);
 
 				try {
 
