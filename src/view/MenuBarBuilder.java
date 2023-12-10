@@ -22,7 +22,7 @@ public class MenuBarBuilder {
 					ViewAllPC(), 
 					ViewAllStaff(stage, user), 
 					PCManagement(), 
-					JobManagement(), 
+					JobManagement(stage, user), 
 					TransactionHistory(stage, user), 
 					ViewAllReport(stage, user)
 			);
@@ -141,8 +141,12 @@ public class MenuBarBuilder {
     	return pcManagement;
     }
     
-    private static MenuItem JobManagement() {
+    private static MenuItem JobManagement(Stage stage, User user) {
     	MenuItem jobManagement = new MenuItem("Job Management");
+    	
+    	jobManagement.setOnAction(e -> {
+    		new JobManagementPage(stage, user);
+    	});
     	
     	return jobManagement;
     }

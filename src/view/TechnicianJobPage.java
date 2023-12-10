@@ -41,8 +41,6 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.techJobTable = new TableView<>();
 		technicianJobPageVariables.techJobTableVB = new VBox();
 		
-//		TableColumn<Job, Integer> jobIDColumn = new TableColumn<>("Job ID");
-//		TableColumn<Job, Integer> userIDColumn = new TableColumn<>("User ID");
 		TableColumn<Job, Integer> pcIDColumn = new TableColumn<>("PC ID");
 		TableColumn<Job, String> jobStatusColumn = new TableColumn<>("Job Status");
 		
@@ -50,14 +48,12 @@ public class TechnicianJobPage {
 		
 		JobController jobController = new JobController();
 		
-		ArrayList<Job> jobList = jobController.getTechJobData(user);
+		ArrayList<Job> jobList = jobController.getTechJobDataHandling(user);
 		
 		for (Job job : jobList) {
 			technicianJobPageVariables.techJobTable.getItems().add(job);
 		}
 		
-//		jobIDColumn.setCellValueFactory(new PropertyValueFactory<>("jobID"));
-//		userIDColumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
 		pcIDColumn.setCellValueFactory(new PropertyValueFactory<>("pcID"));
 		jobStatusColumn.setCellValueFactory(new PropertyValueFactory<>("jobstatus"));
 		
@@ -121,7 +117,7 @@ public class TechnicianJobPage {
 		JobController jobController = new JobController();
 		
 		technicianJobPageVariables.completeButton.setOnAction(e -> {
-			jobController.HandlingUpdateJobStatus(technicianJobPageVariables, user);
+			jobController.updateJobStatusHandling(technicianJobPageVariables, user);
 			new TechnicianJobPage(stage, user);
 		});
 	}

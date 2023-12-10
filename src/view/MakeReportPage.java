@@ -84,7 +84,7 @@ public class MakeReportPage {
 		ReportController reportController = new ReportController();
 		
 		makeReportPageVariables.reportButton.setOnAction(e -> {
-			reportController.handlingMakeReport(makeReportPageVariables, user);
+			reportController.makeReportHandling(makeReportPageVariables, user);
 			new MakeReportPage(stage, user);
 		});
 	}

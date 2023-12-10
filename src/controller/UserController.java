@@ -1,47 +1,28 @@
 package controller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import database.Connect;
 import model.User;
+import model.UserModel;
 import view.ManageStaffPage.ManageStaffPageVariables;
 
 public class UserController {
 
-	Connect con = Connect.getInstance();
-
-	public ArrayList<User> getStaffData() {
-		ArrayList<User> staffList = new ArrayList<>();
-
-		String query = "SELECT `UserID`, `UserName`, `UserRole` FROM `user` WHERE `UserRole` != 'Customer'";
-
-		ResultSet rs = con.selectData(query);
-
-		try {
-			while (rs.next()) {
-				Integer id = rs.getInt("UserID");
-				String name = rs.getString("UserName");
-				String role = rs.getString("UserRole");
-				staffList.add(new User(id, name, null, null, role));
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+	public ArrayList<User> getStaffDataHandling() {
+		UserModel userModel = new UserModel();
+		
+		ArrayList<User> staffList = userModel.getStaffData();
 
 		return staffList;
 	}
 
-	public void handlingUpdateStaff(ManageStaffPageVariables manageStaffPageVariables) {
-
-		String query = "UPDATE User SET UserRole = ? WHERE UserID = ?";
-
+	public void updateStaffHandling(ManageStaffPageVariables manageStaffPageVariables) {
 		String userID = manageStaffPageVariables.userIDTF.getText();
 		String newRole = manageStaffPageVariables.userRoleTF.getText();
+		
+		UserModel userModel = new UserModel();
 
-		ArrayList<User> staffList = getStaffData();
+		ArrayList<User> staffList = userModel.getStaffData();
 
 		boolean userExists = false;
 		for (User user : staffList) {
@@ -52,18 +33,11 @@ public class UserController {
 		}
 
 		if (userExists) {
-
+			
 			if (newRole.equals("Admin") || newRole.equals("Operator") || newRole.equals("Computer Technician")) {
-				PreparedStatement ps = con.prepareStatement(query);
-
-				try {
-					ps.setString(1, newRole);
-					ps.setString(2, userID);
-
-					ps.executeUpdate();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+				
+				userModel.updateStaff(newRole, userID);
+				
 			} else {
 				manageStaffPageVariables.alert2.showAndWait();
 			}

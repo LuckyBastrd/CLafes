@@ -29,7 +29,7 @@ public class ManageStaffPage {
 		BorderPane borderPane;
 		GridPane gridPane;
 		VBox titleVB, staffTableVB, contentVB;
-		TableView<User> staffTable;
+		public TableView<User> staffTable;
 		Label titleLabel, userIDLabel, userRoleLabel;
 		public TextField userIDTF, userRoleTF;
 		Button submitButton;
@@ -48,7 +48,7 @@ public class ManageStaffPage {
 
 		UserController userController = new UserController();
 
-		ArrayList<User> staffList = userController.getStaffData();
+		ArrayList<User> staffList = userController.getStaffDataHandling();
 
 		for (User user : staffList) {
 			manageStaffPageVariables.staffTable.getItems().add(user);
@@ -123,13 +123,14 @@ public class ManageStaffPage {
 		UserController userController = new UserController();
 		
 		manageStaffPageVariables.submitButton.setOnAction(e -> {
-			userController.handlingUpdateStaff(manageStaffPageVariables);
+			userController.updateStaffHandling(manageStaffPageVariables);
 			new ManageStaffPage(stage, user);
 		});
 	}
 
 	private void setStyle(ManageStaffPageVariables manageStaffPageVariables) {
 		manageStaffPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
+		manageStaffPageVariables.staffTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
 	public ManageStaffPage(Stage stage, User user) {

@@ -45,7 +45,7 @@ public class ViewAllReportPage {
 		
 		ReportController reportController = new ReportController();
 		
-		ArrayList<Report> allJobList = reportController.getAllReportData();
+		ArrayList<Report> allJobList = reportController.getAllReportDataHandling();
 		
 		for (Report report : allJobList) {
 			viewAllReportPageVariables.allReportTable.getItems().add(report);

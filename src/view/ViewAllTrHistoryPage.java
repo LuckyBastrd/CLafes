@@ -49,9 +49,9 @@ public class ViewAllTrHistoryPage {
 		
 		TransactionController transactionController = new TransactionController();
 		
-		ArrayList<Transaction> allallTransactionList = transactionController.getAllTransactionData(user);
+		ArrayList<Transaction> allTransactionList = transactionController.getTrHistoryDataHandling(user);
 		
-		for (Transaction transaction : allallTransactionList) {
+		for (Transaction transaction : allTransactionList) {
 			viewAllTrHistoryPageVariables.trTable.getItems().add(transaction);
 		}
 		
