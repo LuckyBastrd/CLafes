@@ -59,23 +59,13 @@ public class JobController {
 //	        return;
 //	    }
 	    
-//	    if (!jobmodel.checkPcCondition(pcID) && !jobmodel.isPcReported(pcID)) {
-//	    	jobManagementPageVariables.alert2.showAndWait();
-//	        return;
-//	    }
-	    //Perlu Perbaikan
 	    if (!jobmodel.checkPcCondition(pcID) && !jobmodel.isPcReported(pcID)) {
-	        // Show alert for checkPcCondition failure
-	        jobManagementPageVariables.alert2.showAndWait();
-	        return;
-	    } else if (!jobmodel.isPcReported(pcID)) {
-	        // Show alert for isPcReported failure
-	        jobManagementPageVariables.alert3.showAndWait();
+	    	jobManagementPageVariables.alert2.showAndWait();
 	        return;
 	    }
 
 	    if (jobmodel.isTechnicianAlreadyDoingJob(pcID)) {
-	    	jobManagementPageVariables.alert4.showAndWait();
+	    	jobManagementPageVariables.alert3.showAndWait();
 	        return;
 	    }
 	    
@@ -111,7 +101,7 @@ public class JobController {
 		}
 		
 		else {
-			jobManagementPageVariables.alert2.showAndWait();
+			jobManagementPageVariables.alert4.showAndWait();
 		}
 		
 	}

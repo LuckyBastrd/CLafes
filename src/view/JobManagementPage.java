@@ -148,17 +148,17 @@ public class JobManagementPage {
 		jobManagementPageVariables.alert2 = new Alert(AlertType.ERROR);
 
 		jobManagementPageVariables.alert2.setTitle("Error");
-		jobManagementPageVariables.alert2.setContentText("PC ID Is In Usable Condition !!!");
+		jobManagementPageVariables.alert2.setContentText("PC ID Is In Usable Condition or Is Not Reported Yet!!! (Please Check It First)");
 		
 		jobManagementPageVariables.alert3 = new Alert(AlertType.ERROR);
 		
 		jobManagementPageVariables.alert3.setTitle("Error");
-		jobManagementPageVariables.alert3.setContentText("PC ID Is Not Reported Yet!!!");
+		jobManagementPageVariables.alert3.setContentText("Other Technician Already Doing This Job !!!");
 		
 		jobManagementPageVariables.alert4 = new Alert(AlertType.ERROR);
 
 		jobManagementPageVariables.alert4.setTitle("Error");
-		jobManagementPageVariables.alert4.setContentText("Other Technician Already Doing This Job !!!");
+		jobManagementPageVariables.alert4.setContentText("PC ID Does Not Exist In The Job List!!");
 		
 		jobManagementPageVariables.alert5 = new Alert(AlertType.ERROR);
 		
