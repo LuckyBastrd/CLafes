@@ -42,29 +42,78 @@ public class JobController {
 	        return;
 	    }
 	    
-		PCController pcController = new PCController();
-
-		ArrayList<PC> pcList = pcController.getAllPCDataHandling();
-
-		boolean pcExists = false;
-		for (PC pc : pcList) {
-			if (pc.getPcID().toString().equals(pcID)) {
-				pcExists = true;
-				break;
-			}
-		}
+//		PCController pcController = new PCController();
+//
+//		ArrayList<PC> pcList = pcController.getAllPCDataHandling();
+//
+//		boolean pcExists = false;
+//		for (PC pc : pcList) {
+//			if (pc.getPcID().toString().equals(pcID)) {
+//				pcExists = true;
+//				break;
+//			}
+//		}
+//	    
+//	    if (!pcExists) {
+//	    	jobManagementPageVariables.alert2.showAndWait();
+//	        return;
+//	    }
 	    
-	    if (!pcExists) {
-	    	jobManagementPageVariables.alert2.showAndWait();
+//	    if (!jobmodel.checkPcCondition(pcID) && !jobmodel.isPcReported(pcID)) {
+//	    	jobManagementPageVariables.alert2.showAndWait();
+//	        return;
+//	    }
+	    //Perlu Perbaikan
+	    if (!jobmodel.checkPcCondition(pcID) && !jobmodel.isPcReported(pcID)) {
+	        // Show alert for checkPcCondition failure
+	        jobManagementPageVariables.alert2.showAndWait();
+	        return;
+	    } else if (!jobmodel.isPcReported(pcID)) {
+	        // Show alert for isPcReported failure
+	        jobManagementPageVariables.alert3.showAndWait();
 	        return;
 	    }
 
 	    if (jobmodel.isTechnicianAlreadyDoingJob(pcID)) {
-	    	jobManagementPageVariables.alert3.showAndWait();
+	    	jobManagementPageVariables.alert4.showAndWait();
 	        return;
 	    }
 	    
 	    jobmodel.addStaffJob(userID, pcID);
+	}
+	
+	public void amdinUpdateJobStatusHandling(JobManagementPageVariables jobManagementPageVariables) {
+	    String pcID = jobManagementPageVariables.pcID2TF.getText();
+	    String jobStatus = jobManagementPageVariables.jobStatusTF.getText();
+	    
+		JobModel jobmodel = new JobModel();
+
+		ArrayList<Job> allTechJobList = jobmodel.getAllTechJobData();
+
+		boolean jobExists = false;
+		for (Job job : allTechJobList) {
+			if (job.getPcID().toString().equals(pcID)) {
+				jobExists = true;
+				break;
+			}
+		}
+		
+		if (jobExists) {
+			
+			if (jobStatus.equals("Complete") || jobStatus.equals("UnComplete")) {
+				jobmodel.adminUpdateJobStatus(pcID, jobStatus);
+			}
+			
+			else {
+				jobManagementPageVariables.alert5.showAndWait();
+			}
+			
+		}
+		
+		else {
+			jobManagementPageVariables.alert2.showAndWait();
+		}
+		
 	}
 
 	public void updateJobStatusHandling(TechnicianJobPageVariables technicianJobPageVariables, User user) {

@@ -116,7 +116,7 @@ public class ManageStaffPage {
 		manageStaffPageVariables.alert2 = new Alert(AlertType.ERROR);
 
 		manageStaffPageVariables.alert2.setTitle("Error");
-		manageStaffPageVariables.alert2.setContentText("Invalid new role !!!. Please choose between Admin, Operator, or Computer Technician(Case Sensitive).");
+		manageStaffPageVariables.alert2.setContentText("Invalid new role !!!. Please choose between Admin, Operator, or Computer Technician(Case Sensitive)");
 	}
 
 	private void UpdateStaffHandler(ManageStaffPageVariables manageStaffPageVariables, Stage stage, User user) {

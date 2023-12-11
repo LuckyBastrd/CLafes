@@ -106,10 +106,68 @@ public class JobModel {
 			return false;
 		}      
 	}
+	
+	public boolean checkPcCondition(String pcID) {
+	    String checkPcConditionQuery = "SELECT PC_Condition FROM pc WHERE PC_ID = ?";
+	    
+	    PreparedStatement psPcConditionCheck = con.prepareStatement(checkPcConditionQuery);
+	    
+	    try {
+	    	psPcConditionCheck.setString(1, pcID);
+			
+			ResultSet rsPcCondition = psPcConditionCheck.executeQuery();
+			
+			boolean isComputerBroken = false;
+			while (rsPcCondition.next()) {
+				String pcCondition = rsPcCondition.getString("PC_Condition");
+				
+                if (pcCondition.equals("Broken") || pcCondition.equals("Maintenance")) {
+                	isComputerBroken = true;
+                    break;
+                }
+			}
+			
+			return isComputerBroken;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return false;
+		}      
+	}
+	
+	public boolean isPcReported(String pcID) {
+	    String checkReportedPcQuery = "SELECT PC_ID FROM report WHERE PC_ID = ?";
+	    
+	    PreparedStatement psReportedPcCheck = con.prepareStatement(checkReportedPcQuery);
+	    
+	    try {
+	    	psReportedPcCheck.setString(1, pcID);
+			
+			ResultSet rsReportedPc = psReportedPcCheck.executeQuery();
+			
+			boolean isPcReported = false;
+			while (rsReportedPc.next()) {
+				String pcCondition = rsReportedPc.getString("PC_ID");
+				
+                if (pcCondition.equals(pcID)) {
+                	isPcReported = true;
+                    break;
+                }
+			}
+			
+			return isPcReported;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return false;
+		}      
+	}
 
 	public boolean isTechnicianAlreadyDoingJob(String pcID) {
 		
-	    String checkJobQuery = "SELECT PC_ID FROM pc WHERE PC_ID = ?";
+	    String checkJobQuery = "SELECT PC_ID FROM job WHERE PC_ID = ?";
 	    
 	    PreparedStatement psJobCheck = con.prepareStatement(checkJobQuery);
 
@@ -136,6 +194,23 @@ public class JobModel {
 			
 			return false;
 		}
+	}
+	
+	public void adminUpdateJobStatus(String pcID, String jobStatus) {
+		String updateQuery = "UPDATE Job SET JobStatus = ? WHERE PC_ID = ?";
+		
+		PreparedStatement psUpdate = con.prepareStatement(updateQuery);
+		
+		try {
+			psUpdate.setString(1, jobStatus);
+			psUpdate.setString(2, pcID);
+			
+			psUpdate.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void updateJobStatus(String pcID) {

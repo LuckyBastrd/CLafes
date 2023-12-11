@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Job;
@@ -29,12 +30,13 @@ public class JobManagementPage {
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
-		VBox titleVB, allJobTableVB, contentVB;
+		VBox titleVB, allJobTableVB, contentVB1, contentVB2;
+		HBox mainContenctHB;
 		TableView<Job> allJobTable;
-		Label titleLabel, pcIDLabel, userIDLabel, jobStatusLabel;
-		public TextField pcIDTF, userIDTF, jobStatusTF;
-		Button addJobButton;
-		public Alert alert1, alert2, alert3;
+		Label titleLabel, addJobTitle, updateStatusLabel, pcIDLabel, userIDLabel, pcID2Label, jobStatusLabel;
+		public TextField pcIDTF, userIDTF, pcID2TF, jobStatusTF;
+		Button addJobButton, updateStatusButton;
+		public Alert alert1, alert2, alert3, alert4, alert5;
 	}
 	
 	private void setJobTableData(JobManagementPageVariables jobManagementPageVariables, User user) {
@@ -77,13 +79,18 @@ public class JobManagementPage {
 		
 		jobManagementPageVariables.borderPane = new BorderPane();
 		jobManagementPageVariables.titleVB = new VBox();
-		jobManagementPageVariables.contentVB = new VBox();
+		jobManagementPageVariables.contentVB1 = new VBox();
+		jobManagementPageVariables.contentVB2 = new VBox();
+		jobManagementPageVariables.mainContenctHB = new HBox();
 		jobManagementPageVariables.gridPane = new GridPane();
 		
 		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
 		jobManagementPageVariables.borderPane.setTop(menuBar);
 		
 		jobManagementPageVariables.titleLabel = new Label("JOB MANAGEMENT");
+		
+		//Add Job Section
+		jobManagementPageVariables.addJobTitle = new Label("Add Job");
 		
 		jobManagementPageVariables.userIDLabel = new Label("User ID");
 		jobManagementPageVariables.userIDTF = new TextField();
@@ -93,18 +100,39 @@ public class JobManagementPage {
 		
 		jobManagementPageVariables.addJobButton = new Button("Add Job");
 		
+		
+		//Update Job Status Section
+		jobManagementPageVariables.updateStatusLabel = new Label("Update Job Status");
+		
+		jobManagementPageVariables.pcID2Label = new Label("PC ID");
+		jobManagementPageVariables.pcID2TF = new TextField();
+		
+		jobManagementPageVariables.jobStatusLabel = new Label("Job Status");
+		jobManagementPageVariables.jobStatusTF = new TextField();
+		
+		jobManagementPageVariables.updateStatusButton = new Button("Update");
+		
+		
 		jobManagementPageVariables.titleVB.getChildren().add(jobManagementPageVariables.titleLabel);
 		jobManagementPageVariables.titleVB.setAlignment(Pos.CENTER);
 		
-		jobManagementPageVariables.contentVB.getChildren().addAll(jobManagementPageVariables.userIDLabel,
+		jobManagementPageVariables.contentVB1.getChildren().addAll(jobManagementPageVariables.addJobTitle, jobManagementPageVariables.userIDLabel,
 				jobManagementPageVariables.userIDTF, jobManagementPageVariables.pcIDLabel,
 				jobManagementPageVariables.pcIDTF, jobManagementPageVariables.addJobButton);
-		jobManagementPageVariables.contentVB.setPadding(new Insets(0, 1000, 0, 30));
-		jobManagementPageVariables.contentVB.setSpacing(13);
+		jobManagementPageVariables.contentVB1.setPadding(new Insets(0, 130, 0, 0));
+		jobManagementPageVariables.contentVB1.setSpacing(13);
+		
+		jobManagementPageVariables.contentVB2.getChildren().addAll(jobManagementPageVariables.updateStatusLabel, jobManagementPageVariables.pcID2Label,
+				jobManagementPageVariables.pcID2TF, jobManagementPageVariables.jobStatusLabel,
+				jobManagementPageVariables.jobStatusTF, jobManagementPageVariables.updateStatusButton);
+		jobManagementPageVariables.contentVB2.setSpacing(13);
+		
+		jobManagementPageVariables.mainContenctHB.getChildren().addAll(jobManagementPageVariables.contentVB1, jobManagementPageVariables.contentVB2);
+		jobManagementPageVariables.mainContenctHB.setPadding(new Insets(0, 0, 0, 30));
 		
 		jobManagementPageVariables.gridPane.add(jobManagementPageVariables.titleVB, 0, 0);
 		jobManagementPageVariables.gridPane.add(jobManagementPageVariables.allJobTableVB, 0, 1);
-		jobManagementPageVariables.gridPane.add(jobManagementPageVariables.contentVB, 0, 2);
+		jobManagementPageVariables.gridPane.add(jobManagementPageVariables.mainContenctHB, 0, 2);
 		
 		jobManagementPageVariables.borderPane.setCenter(jobManagementPageVariables.gridPane);
 		
@@ -120,25 +148,42 @@ public class JobManagementPage {
 		jobManagementPageVariables.alert2 = new Alert(AlertType.ERROR);
 
 		jobManagementPageVariables.alert2.setTitle("Error");
-		jobManagementPageVariables.alert2.setContentText("PC ID Doesn't Exist !!!");
+		jobManagementPageVariables.alert2.setContentText("PC ID Is In Usable Condition !!!");
 		
 		jobManagementPageVariables.alert3 = new Alert(AlertType.ERROR);
-
+		
 		jobManagementPageVariables.alert3.setTitle("Error");
-		jobManagementPageVariables.alert3.setContentText("Other Technician Already Doing This Job !!!");
+		jobManagementPageVariables.alert3.setContentText("PC ID Is Not Reported Yet!!!");
+		
+		jobManagementPageVariables.alert4 = new Alert(AlertType.ERROR);
+
+		jobManagementPageVariables.alert4.setTitle("Error");
+		jobManagementPageVariables.alert4.setContentText("Other Technician Already Doing This Job !!!");
+		
+		jobManagementPageVariables.alert5 = new Alert(AlertType.ERROR);
+		
+		jobManagementPageVariables.alert5.setTitle("Error");
+		jobManagementPageVariables.alert5.setContentText("Invalid job status !!!. Please choose between Complete or UnComplete(Case Sensitive)");
 	}
 	
-	private void addJobHandler(JobManagementPageVariables jobManagementPageVariables, Stage stage, User user) {
+	private void buttonHandler(JobManagementPageVariables jobManagementPageVariables, Stage stage, User user) {
 		JobController jobController = new JobController();
 		
 		jobManagementPageVariables.addJobButton.setOnAction(e -> {
 			jobController.addStaffJobHandling(jobManagementPageVariables);;
 			new JobManagementPage(stage, user);
 		});
+		
+		jobManagementPageVariables.updateStatusButton.setOnAction(e -> {
+			jobController.amdinUpdateJobStatusHandling(jobManagementPageVariables);
+			new JobManagementPage(stage, user);
+		});
 	}
 	
 	private void setStyle(JobManagementPageVariables jobManagementPageVariables) {
 		jobManagementPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
+		jobManagementPageVariables.addJobTitle.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 20px;");
+		jobManagementPageVariables.updateStatusLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 20px;");
 		jobManagementPageVariables.allJobTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
@@ -147,7 +192,7 @@ public class JobManagementPage {
 		JobManagementPageVariables jobManagementPageVariables = new JobManagementPageVariables();
 		initializeJobListPage(jobManagementPageVariables, stage, user);
 		initializeAlert(jobManagementPageVariables);
-		addJobHandler(jobManagementPageVariables, stage, user);
+		buttonHandler(jobManagementPageVariables, stage, user);
 		setStyle(jobManagementPageVariables);
 		
 		jobManagementPageVariables.stage = stage;

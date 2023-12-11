@@ -20,8 +20,8 @@ public class Main extends Application {
 		
 		User user = new User(userID, userName, "123", 12, userRole);
 
-	    new HomePage(primaryStage, user);
-		//new JobManagementPage(primaryStage, user);
+	    //new HomePage(primaryStage, user);
+		new JobManagementPage(primaryStage, user);
 		//new TechnicianJobPage(primaryStage, user);
 		//new ManageStaffPage(primaryStage, user);
 	}
