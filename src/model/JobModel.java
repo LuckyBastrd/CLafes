@@ -213,6 +213,22 @@ public class JobModel {
 		
 	}
 	
+	public boolean isJobExists(String pcID) {
+		
+		ArrayList<Job> allTechJobList = getAllTechJobData();
+
+		boolean jobExists = false;
+		
+		for (Job job : allTechJobList) {
+			if (job.getPcID().toString().equals(pcID)) {
+				jobExists = true;
+				break;
+			}
+		}
+		
+		return jobExists;
+	}
+	
 	public void updateJobStatus(String pcID) {
 		String updateQuery = "UPDATE Job SET JobStatus = 'Complete' WHERE PC_ID = ?";
 		
@@ -226,6 +242,21 @@ public class JobModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean isTechJobExists(Integer userid, String pcID) {
+		ArrayList<Job> techJobList = getTechJobData(userid);
+		
+		boolean jobExists = false;
+		
+		for (Job job : techJobList) {
+			if (job.getPcID().toString().equals(pcID)) {
+				jobExists = true;
+				break;
+			}
+		}
+		
+		return jobExists; 
 	}
 	
 	public boolean isJobComplete(String pcID) {

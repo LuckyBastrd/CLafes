@@ -1,7 +1,7 @@
 package view;
 
+import app.Main;
 import controller.ReportController;
-import controller.UserController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,31 +14,29 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import model.User;
-import view.ManageStaffPage.ManageStaffPageVariables;
 
 public class MakeReportPage {
 	
+	ReportController reportController = new ReportController();
+	
 	public class MakeReportPageVariables {
-		Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
 		VBox titleVB, contentVB;
 		Label titleLabel, pcIDLabel, reportNoteLabel;
 		public TextField pcIDTF, reportNoteTF;
-		Button reportButton;
+		public Button reportButton;
 		public Alert alert1, alert2;
 	}
 	
-	private void initializeMakeReportPage(MakeReportPageVariables makeReportPageVariables, Stage stage,User user) {
+	private void initializeMakeReportPage(MakeReportPageVariables makeReportPageVariables) {
 		makeReportPageVariables.borderPane = new BorderPane();
 		makeReportPageVariables.titleVB = new VBox();
 		makeReportPageVariables.contentVB = new VBox();
 		makeReportPageVariables.gridPane = new GridPane();
 		
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		makeReportPageVariables.borderPane.setTop(menuBar);
 		
 		makeReportPageVariables.titleLabel = new Label("MAKE REPORT");
@@ -80,30 +78,24 @@ public class MakeReportPage {
 		makeReportPageVariables.alert2.setContentText("Report Note Cannot Be Empty!!!");
 	}
 	
-	private void MakeReportHandler(MakeReportPageVariables makeReportPageVariables, Stage stage, User user) {
-		ReportController reportController = new ReportController();
-		
-		makeReportPageVariables.reportButton.setOnAction(e -> {
-			reportController.makeReportHandling(makeReportPageVariables, user);
-			new MakeReportPage(stage, user);
-		});
+	private void MakeReportHandler(MakeReportPageVariables makeReportPageVariables) {
+		reportController.makeReportHandling(makeReportPageVariables);
 	}
 	
 	private void setStyle(MakeReportPageVariables makeReportPageVariables) {
 		makeReportPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
 	}
 	
-	public MakeReportPage(Stage stage, User user) {
+	public Scene startMakeReportPage() {
 		MakeReportPageVariables makeReportPageVariables = new MakeReportPageVariables();
-		initializeMakeReportPage(makeReportPageVariables, stage, user);
+		
+		initializeMakeReportPage(makeReportPageVariables);
 		initializeAlert(makeReportPageVariables);
-		MakeReportHandler(makeReportPageVariables, stage, user);
+		MakeReportHandler(makeReportPageVariables);
 		setStyle(makeReportPageVariables);
 		
-		makeReportPageVariables.stage = stage;
-		makeReportPageVariables.stage.setResizable(false);
-		makeReportPageVariables.stage.setScene(makeReportPageVariables.scene);
-		makeReportPageVariables.stage.setTitle("Make Report Page");
-		makeReportPageVariables.stage.show();
+		Main.stage.setTitle("Report Page");
+		
+		return makeReportPageVariables.scene;
 	}
 }

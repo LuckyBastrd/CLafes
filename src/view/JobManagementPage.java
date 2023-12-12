@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import app.Main;
 import controller.JobController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,14 +20,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.Job;
-import model.User;
 
 public class JobManagementPage {
 	
+	JobController jobController = new JobController();
+	
 	public class JobManagementPageVariables {
-		Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
@@ -35,11 +35,11 @@ public class JobManagementPage {
 		TableView<Job> allJobTable;
 		Label titleLabel, addJobTitle, updateStatusLabel, pcIDLabel, userIDLabel, pcID2Label, jobStatusLabel;
 		public TextField pcIDTF, userIDTF, pcID2TF, jobStatusTF;
-		Button addJobButton, updateStatusButton;
+		public Button addJobButton, updateStatusButton;
 		public Alert alert1, alert2, alert3, alert4, alert5;
 	}
 	
-	private void setJobTableData(JobManagementPageVariables jobManagementPageVariables, User user) {
+	private void setJobTableData(JobManagementPageVariables jobManagementPageVariables) {
 		jobManagementPageVariables.allJobTable = new TableView<>();
 		jobManagementPageVariables.allJobTableVB = new VBox();
 		
@@ -50,9 +50,7 @@ public class JobManagementPage {
 		
 		jobManagementPageVariables.allJobTable.getColumns().addAll(jobIDColumn, userIDColumn, pcIDColumn, jobStatusColumn);
 		
-		JobController jobController = new JobController();
-		
-		ArrayList<Job> allJobList = jobController.getTechJobDataHandling(user);
+		ArrayList<Job> allJobList = jobController.getTechJobDataHandling();
 		
 		for (Job job : allJobList) {
 			jobManagementPageVariables.allJobTable.getItems().add(job);
@@ -74,8 +72,8 @@ public class JobManagementPage {
 		jobManagementPageVariables.allJobTableVB.setPadding(new Insets(20, 30, 30, 30));
 	}
 	
-	private void initializeJobListPage(JobManagementPageVariables jobManagementPageVariables, Stage stage, User user) {
-		setJobTableData(jobManagementPageVariables, user);
+	private void initializeJobListPage(JobManagementPageVariables jobManagementPageVariables) {
+		setJobTableData(jobManagementPageVariables);
 		
 		jobManagementPageVariables.borderPane = new BorderPane();
 		jobManagementPageVariables.titleVB = new VBox();
@@ -84,7 +82,7 @@ public class JobManagementPage {
 		jobManagementPageVariables.mainContenctHB = new HBox();
 		jobManagementPageVariables.gridPane = new GridPane();
 		
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		jobManagementPageVariables.borderPane.setTop(menuBar);
 		
 		jobManagementPageVariables.titleLabel = new Label("JOB MANAGEMENT");
@@ -166,18 +164,10 @@ public class JobManagementPage {
 		jobManagementPageVariables.alert5.setContentText("Invalid job status !!!. Please choose between Complete or UnComplete(Case Sensitive)");
 	}
 	
-	private void buttonHandler(JobManagementPageVariables jobManagementPageVariables, Stage stage, User user) {
-		JobController jobController = new JobController();
+	private void buttonHandler(JobManagementPageVariables jobManagementPageVariables) {
+		jobController.addStaffJobHandling(jobManagementPageVariables);
 		
-		jobManagementPageVariables.addJobButton.setOnAction(e -> {
-			jobController.addStaffJobHandling(jobManagementPageVariables);;
-			new JobManagementPage(stage, user);
-		});
-		
-		jobManagementPageVariables.updateStatusButton.setOnAction(e -> {
-			jobController.amdinUpdateJobStatusHandling(jobManagementPageVariables);
-			new JobManagementPage(stage, user);
-		});
+		jobController.amdinUpdateJobStatusHandling(jobManagementPageVariables);
 	}
 	
 	private void setStyle(JobManagementPageVariables jobManagementPageVariables) {
@@ -187,18 +177,16 @@ public class JobManagementPage {
 		jobManagementPageVariables.allJobTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
-	
-	public JobManagementPage(Stage stage, User user) {
+	public Scene startJobManagementPage() {
 		JobManagementPageVariables jobManagementPageVariables = new JobManagementPageVariables();
-		initializeJobListPage(jobManagementPageVariables, stage, user);
+		
+		initializeJobListPage(jobManagementPageVariables);
 		initializeAlert(jobManagementPageVariables);
-		buttonHandler(jobManagementPageVariables, stage, user);
+		buttonHandler(jobManagementPageVariables);
 		setStyle(jobManagementPageVariables);
 		
-		jobManagementPageVariables.stage = stage;
-		jobManagementPageVariables.stage.setResizable(false);
-		jobManagementPageVariables.stage.setScene(jobManagementPageVariables.scene);
-		jobManagementPageVariables.stage.setTitle("Job Management Page");
-		jobManagementPageVariables.stage.show();
+		Main.stage.setTitle("Jog Management Page");
+		
+		return jobManagementPageVariables.scene;
 	}
 }

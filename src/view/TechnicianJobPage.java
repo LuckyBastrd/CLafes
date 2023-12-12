@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import app.Main;
 import controller.JobController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,14 +19,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.Job;
-import model.User;
 
 public class TechnicianJobPage {
 	
+	JobController jobController = new JobController();
+	
 	public class TechnicianJobPageVariables {
-		Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
@@ -37,7 +37,7 @@ public class TechnicianJobPage {
 		public Alert alert1, alert2;
 	}
 	
-	private void setTechJobTableData(TechnicianJobPageVariables technicianJobPageVariables, User user) {
+	private void setTechJobTableData(TechnicianJobPageVariables technicianJobPageVariables) {
 		technicianJobPageVariables.techJobTable = new TableView<>();
 		technicianJobPageVariables.techJobTableVB = new VBox();
 		
@@ -46,9 +46,7 @@ public class TechnicianJobPage {
 		
 		technicianJobPageVariables.techJobTable.getColumns().addAll(pcIDColumn, jobStatusColumn);
 		
-		JobController jobController = new JobController();
-		
-		ArrayList<Job> jobList = jobController.getTechJobDataHandling(user);
+		ArrayList<Job> jobList = jobController.getTechJobDataHandling();
 		
 		for (Job job : jobList) {
 			technicianJobPageVariables.techJobTable.getItems().add(job);
@@ -66,15 +64,15 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.techJobTableVB.setPadding(new Insets(30, 30, 30, 30));
 	}
 	
-	private void initializeTechJobPage(TechnicianJobPageVariables technicianJobPageVariables, Stage stage, User user) {
-		setTechJobTableData(technicianJobPageVariables, user);
+	private void initializeTechJobPage(TechnicianJobPageVariables technicianJobPageVariables) {
+		setTechJobTableData(technicianJobPageVariables);
 		
 		technicianJobPageVariables.borderPane = new BorderPane();
 		technicianJobPageVariables.titleVB = new VBox();
 		technicianJobPageVariables.contentVB = new VBox();
 		technicianJobPageVariables.gridPane = new GridPane();
 		
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		technicianJobPageVariables.borderPane.setTop(menuBar);
 		
 		technicianJobPageVariables.titleLabel = new Label("TECHNICIAN JOB PAGE");
@@ -113,13 +111,8 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.alert2.setContentText("PC ID Already Completed !!!");
 	}
 	
-	private void UpdateJobStatusHandler(TechnicianJobPageVariables technicianJobPageVariables, Stage stage, User user) {
-		JobController jobController = new JobController();
-		
-		technicianJobPageVariables.completeButton.setOnAction(e -> {
-			jobController.updateJobStatusHandling(technicianJobPageVariables, user);
-			new TechnicianJobPage(stage, user);
-		});
+	private void UpdateJobStatusHandler(TechnicianJobPageVariables technicianJobPageVariables) {
+		jobController.updateJobStatusHandling(technicianJobPageVariables);
 	}
 	
 	private void setStyle(TechnicianJobPageVariables technicianJobPageVariables) {
@@ -127,17 +120,16 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.techJobTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
-	public TechnicianJobPage(Stage stage, User user) {
+	public Scene startTechnicianJobPage() {
 		TechnicianJobPageVariables technicianJobPageVariables = new TechnicianJobPageVariables();
-		initializeTechJobPage(technicianJobPageVariables, stage, user);
+		
+		initializeTechJobPage(technicianJobPageVariables);
 		initializeAlert(technicianJobPageVariables);
-		UpdateJobStatusHandler(technicianJobPageVariables, stage, user);
+		UpdateJobStatusHandler(technicianJobPageVariables);
 		setStyle(technicianJobPageVariables);
 		
-		technicianJobPageVariables.stage = stage;
-		technicianJobPageVariables.stage.setResizable(false);
-		technicianJobPageVariables.stage.setScene(technicianJobPageVariables.scene);
-		technicianJobPageVariables.stage.setTitle("Technician Job Page");
-		technicianJobPageVariables.stage.show();
+		Main.stage.setTitle("Technician Job Page");
+		
+		return technicianJobPageVariables.scene;
 	}
 }

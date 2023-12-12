@@ -47,4 +47,20 @@ public class UserModel {
 		}
 	}
 	
+    public boolean isUserExists(String userID) {
+    	
+    	ArrayList<User> staffList = getStaffData();
+    	
+    	boolean userExists = false;
+    	
+        for (User user : staffList) {
+            if (user.getUserID().toString().equals(userID)) {
+            	userExists  = true;
+                break;
+            }
+        }
+        
+        return userExists;
+    } 
+	
 }

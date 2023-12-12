@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import controller.PCController;
 import database.Connect;
 
 public class ReportModel {
@@ -37,7 +38,7 @@ public class ReportModel {
 		return allReportList;
 	}
 	
-	public void makeReport(User user, String pcID, String reportNote) {
+	public void makeReport(Integer userid, String pcID, String reportNote) {
 		String query = "INSERT INTO `report`(`Report_ID`, `UserID`, `PC_ID`, `ReportNote`, `ReportDate`) VALUES (?, ?, ?, ?, ?)";
 		
 		PreparedStatement ps = con.prepareStatement(query);
@@ -45,7 +46,7 @@ public class ReportModel {
 		try {
 
 			ps.setString(1, null);
-			ps.setInt(2, user.getUserID());
+			ps.setInt(2, userid);
 			ps.setString(3, pcID);
 			ps.setString(4, reportNote);
 			ps.setDate(5, new Date(System.currentTimeMillis()));
@@ -56,4 +57,23 @@ public class ReportModel {
 			e.printStackTrace();
 		}
 	}
+	
+    public boolean isPcExists(String pcID) {
+    	
+    	PCController pcController = new PCController();
+    	
+    	ArrayList<PC> pcList = pcController.getAllPCDataHandling();
+    	
+		boolean pcExists = false;
+		
+		for (PC pc : pcList) {
+			if (pc.getPcID().toString().equals(pcID)) {
+				pcExists = true;
+				break;
+			}
+		}
+        
+        return pcExists;
+    } 
+    
 }

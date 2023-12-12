@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import database.Connect;
 
 public class TransactionModel {
+	
 	Connect con = Connect.getInstance();
 	
 	public ArrayList<Transaction> getAllTrHistoryData() {

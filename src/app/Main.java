@@ -1,33 +1,35 @@
 package app;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.User;
-import view.HomePage;
-import view.JobManagementPage;
-import view.MakeReportPage;
-import view.ManageStaffPage;
-import view.TechnicianJobPage;
-import view.ViewAllReportPage;
-import view.ViewAllTrHistoryPage;
+import view.LoginPage;
 
 public class Main extends Application {
+	
+	public static Stage stage;
+	
+	public static void setScene(Scene scene) {
+		
+		if(stage == null) {
+			return;
+		}
+		
+		stage.setScene(scene);
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Integer userID = 5;
-		String userName = "Lucky";
-		String userRole = "Admin";
+		stage = primaryStage;
+		Main.setScene(new LoginPage().startLoginPage());
 		
-		User user = new User(userID, userName, "123", 12, userRole);
-
-	    new HomePage(primaryStage, user);
-		//new JobManagementPage(primaryStage, user);
-		//new TechnicianJobPage(primaryStage, user);
-		//new ManageStaffPage(primaryStage, user);
+		stage.setResizable(false);
+		
+		stage.show();
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-
+	
 }

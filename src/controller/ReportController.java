@@ -2,54 +2,49 @@ package controller;
 
 import java.util.ArrayList;
 
-import model.PC;
+import app.Main;
 import model.Report;
 import model.ReportModel;
 import model.User;
+import model.UserDataSingleton;
+import view.MakeReportPage;
 import view.MakeReportPage.MakeReportPageVariables;
 
 public class ReportController {
-
+	
+	ReportModel reportModel = new ReportModel();
+	
+	User currentUser = UserDataSingleton.getInstance().getCurrentUser();
+	
 	public ArrayList<Report> getAllReportDataHandling() {
-		
-		ReportModel reportModel = new ReportModel();
-
 		ArrayList<Report> allReportList = reportModel.getAllReportData();
 		
 		return allReportList;
 	}
 
-	public void makeReportHandling(MakeReportPageVariables makeReportPageVariables, User user) {
-		String pcID = makeReportPageVariables.pcIDTF.getText();
-		String reportNote = makeReportPageVariables.reportNoteTF.getText();
-		
-		ReportModel reportModel = new ReportModel();
-		
-		PCController pcController = new PCController();
+	public void makeReportHandling(MakeReportPageVariables makeReportPageVariables) {
+		makeReportPageVariables.reportButton.setOnAction(e -> {
+			
+			String pcID = makeReportPageVariables.pcIDTF.getText();
+			String reportNote = makeReportPageVariables.reportNoteTF.getText();
 
-		ArrayList<PC> pcList = pcController.getAllPCDataHandling();
+			if (reportModel.isPcExists(pcID)) {
 
-		boolean pcExists = false;
-		for (PC pc : pcList) {
-			if (pc.getPcID().toString().equals(pcID)) {
-				pcExists = true;
-				break;
+				if (!reportNote.isEmpty()) {
+					reportModel.makeReport(currentUser.getUserID(), pcID, reportNote);
+					
+					Main.setScene(new MakeReportPage().startMakeReportPage());
+				}
+				
+				else {
+					makeReportPageVariables.alert2.showAndWait();
+				}
 			}
-		}
 
-		if (pcExists) {
-
-			if (!reportNote.isEmpty()) {
-				reportModel.makeReport(user, pcID, reportNote);
+			else {
+				makeReportPageVariables.alert1.showAndWait();
 			}
 			
-			else {
-				makeReportPageVariables.alert2.showAndWait();
-			}
-		}
-
-		else {
-			makeReportPageVariables.alert1.showAndWait();
-		}
+		});
 	}
 }
