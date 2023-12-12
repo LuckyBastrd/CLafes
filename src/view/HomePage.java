@@ -13,7 +13,7 @@ import model.User;
 public class HomePage {
 	
 	public class HomePageVariables {
-		public Stage stage;
+		Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
@@ -68,6 +68,7 @@ public class HomePage {
 		homePageVariables.stage = stage;
 		homePageVariables.stage.setResizable(false);
 		homePageVariables.stage.setScene(homePageVariables.scene);
+		homePageVariables.stage.setTitle("Home Page");
 		homePageVariables.stage.show();
 	}
 }

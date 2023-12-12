@@ -103,6 +103,7 @@ public class MakeReportPage {
 		makeReportPageVariables.stage = stage;
 		makeReportPageVariables.stage.setResizable(false);
 		makeReportPageVariables.stage.setScene(makeReportPageVariables.scene);
+		makeReportPageVariables.stage.setTitle("Make Report Page");
 		makeReportPageVariables.stage.show();
 	}
 }

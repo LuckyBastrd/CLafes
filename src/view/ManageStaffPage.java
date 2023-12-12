@@ -143,6 +143,7 @@ public class ManageStaffPage {
 		manageStaffPageVariables.stage = stage;
 		manageStaffPageVariables.stage.setResizable(false);
 		manageStaffPageVariables.stage.setScene(manageStaffPageVariables.scene);
+		manageStaffPageVariables.stage.setTitle("Manage Staff Page");
 		manageStaffPageVariables.stage.show();
 	}
 }

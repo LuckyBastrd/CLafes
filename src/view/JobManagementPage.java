@@ -198,6 +198,7 @@ public class JobManagementPage {
 		jobManagementPageVariables.stage = stage;
 		jobManagementPageVariables.stage.setResizable(false);
 		jobManagementPageVariables.stage.setScene(jobManagementPageVariables.scene);
+		jobManagementPageVariables.stage.setTitle("Job Management Page");
 		jobManagementPageVariables.stage.show();
 	}
 }

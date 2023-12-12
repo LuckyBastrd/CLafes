@@ -103,6 +103,7 @@ public class ViewAllReportPage {
 		viewAllReportPageVariables.stage = stage;
 		viewAllReportPageVariables.stage.setResizable(false);
 		viewAllReportPageVariables.stage.setScene(viewAllReportPageVariables.scene);
+		viewAllReportPageVariables.stage.setTitle("Report Page");
 		viewAllReportPageVariables.stage.show();
 	}
 	

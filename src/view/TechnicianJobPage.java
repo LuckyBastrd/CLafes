@@ -137,6 +137,7 @@ public class TechnicianJobPage {
 		technicianJobPageVariables.stage = stage;
 		technicianJobPageVariables.stage.setResizable(false);
 		technicianJobPageVariables.stage.setScene(technicianJobPageVariables.scene);
+		technicianJobPageVariables.stage.setTitle("Technician Job Page");
 		technicianJobPageVariables.stage.show();
 	}
 }

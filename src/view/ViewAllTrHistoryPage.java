@@ -111,6 +111,7 @@ public class ViewAllTrHistoryPage {
 		viewAllTrHistoryPageVariables.stage = stage;
 		viewAllTrHistoryPageVariables.stage.setResizable(false);
 		viewAllTrHistoryPageVariables.stage.setScene(viewAllTrHistoryPageVariables.scene);
+		viewAllTrHistoryPageVariables.stage.setTitle("Transaction History Page");
 		viewAllTrHistoryPageVariables.stage.show();
 	}
 	
