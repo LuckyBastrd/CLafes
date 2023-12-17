@@ -1,5 +1,6 @@
 package view;
 
+import app.Main;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -7,13 +8,14 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.User;
+import model.UserDataSingleton;
 
 public class HomePage {
 	
+	User currentUser = UserDataSingleton.getInstance().getCurrentUser();
+	
 	public class HomePageVariables {
-		public Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
@@ -21,7 +23,7 @@ public class HomePage {
 		Label titleLabel, userNameLabel, userRoleLabel;
 	}
 	
-	private void initializeHomePage(HomePageVariables homePageVariables, Stage stage, User user) {
+	private void initializeHomePage(HomePageVariables homePageVariables) {
 		homePageVariables.borderPane = new BorderPane();
 		homePageVariables.gridPane = new GridPane();
 		homePageVariables.titleVB = new VBox();
@@ -30,10 +32,10 @@ public class HomePage {
 		//Label
 		homePageVariables.titleLabel = new Label("HOME PAGE");
 		
-		homePageVariables.userNameLabel = new Label("Name : " + user.getUsername());
-		homePageVariables.userRoleLabel = new Label("Role : " + user.getUserrole());
+		homePageVariables.userNameLabel = new Label("Name : " + currentUser.getUsername());
+		homePageVariables.userRoleLabel = new Label("Role : " + currentUser.getUserrole());
 		
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		homePageVariables.borderPane.setTop(menuBar);
 		
 		homePageVariables.titleVB.getChildren().add(homePageVariables.titleLabel);
@@ -59,15 +61,16 @@ public class HomePage {
 		homePageVariables.contentVB.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
 	}
 	
-	public HomePage(Stage stage, User user) {
+	
+	public Scene startHomePage() {
 		HomePageVariables homePageVariables = new HomePageVariables();
 		
-		initializeHomePage(homePageVariables, stage, user); 
+		initializeHomePage(homePageVariables); 
 		setStyle(homePageVariables);
 		
-		homePageVariables.stage = stage;
-		homePageVariables.stage.setResizable(false);
-		homePageVariables.stage.setScene(homePageVariables.scene);
-		homePageVariables.stage.show();
+		Main.stage.setTitle("Home Page");
+		
+		return homePageVariables.scene;
 	}
+	
 }

@@ -3,6 +3,7 @@ package view;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import app.Main;
 import controller.ReportController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,7 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Report;
-import model.User;
 
 public class ViewAllReportPage {
 
@@ -31,7 +31,7 @@ public class ViewAllReportPage {
 		Label titleLabel;
 	}
 	
-	private void setAllReportTableData(ViewAllReportPageVariables viewAllReportPageVariables, User user) {
+	private void setAllReportTableData(ViewAllReportPageVariables viewAllReportPageVariables) {
 		viewAllReportPageVariables.allReportTable = new TableView<>();
 		viewAllReportPageVariables.tableVB = new VBox();
 		
@@ -45,7 +45,7 @@ public class ViewAllReportPage {
 		
 		ReportController reportController = new ReportController();
 		
-		ArrayList<Report> allJobList = reportController.getAllReportData();
+		ArrayList<Report> allJobList = reportController.getAllReportDataHandling();
 		
 		for (Report report : allJobList) {
 			viewAllReportPageVariables.allReportTable.getItems().add(report);
@@ -67,14 +67,14 @@ public class ViewAllReportPage {
 	    viewAllReportPageVariables.tableVB.setPadding(new Insets(20, 30, 30, 30));
 	}
 	
-	private void initializeViewAllReportPage(ViewAllReportPageVariables viewAllReportPageVariables, Stage stage, User user) {
-		setAllReportTableData(viewAllReportPageVariables, user);
+	private void initializeViewAllReportPage(ViewAllReportPageVariables viewAllReportPageVariables) {
+		setAllReportTableData(viewAllReportPageVariables);
 		
 		viewAllReportPageVariables.borderPane = new BorderPane();
 		viewAllReportPageVariables.titleVB = new VBox();
 		viewAllReportPageVariables.gridPane = new GridPane();
 		
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		viewAllReportPageVariables.borderPane.setTop(menuBar);
 		
 		viewAllReportPageVariables.titleLabel = new Label("REPORT FROM CUSTOMER & OPERATOR");
@@ -95,15 +95,15 @@ public class ViewAllReportPage {
 		viewAllReportPageVariables.allReportTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
-	public ViewAllReportPage(Stage stage, User user) {
+	public Scene startViewAllReportPageVariables() {
 		ViewAllReportPageVariables viewAllReportPageVariables = new ViewAllReportPageVariables();
-		initializeViewAllReportPage(viewAllReportPageVariables, stage, user);
+		
+		initializeViewAllReportPage(viewAllReportPageVariables);
 		setStyle(viewAllReportPageVariables);
 		
-		viewAllReportPageVariables.stage = stage;
-		viewAllReportPageVariables.stage.setResizable(false);
-		viewAllReportPageVariables.stage.setScene(viewAllReportPageVariables.scene);
-		viewAllReportPageVariables.stage.show();
+		Main.stage.setTitle("Report Page");
+		
+		return viewAllReportPageVariables.scene;
 	}
 	
 }

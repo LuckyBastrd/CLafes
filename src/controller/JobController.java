@@ -1,121 +1,113 @@
 package controller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import database.Connect;
+import app.Main;
 import model.Job;
+import model.JobModel;
 import model.User;
+import model.UserDataSingleton;
+import view.TechnicianJobPage;
+import view.JobManagementPage;
+import view.JobManagementPage.JobManagementPageVariables;
 import view.TechnicianJobPage.TechnicianJobPageVariables;
 
 public class JobController {
-
-	Connect con = Connect.getInstance();
-
-	public ArrayList<Job> getAllJobData() {
-		ArrayList<Job> allJobList = new ArrayList<>();
-
-		String query = "SELECT * FROM Job";
-
-		ResultSet rs = con.selectData(query);
-
-		try {
-			while (rs.next()) {
-				Integer jid = rs.getInt("Job_ID");
-				Integer uid = rs.getInt("UserID");
-				Integer pid = rs.getInt("PC_ID");
-				String jstatus = rs.getString("JobStatus");
-
-				allJobList.add(new Job(jid, uid, pid, jstatus));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return allJobList;
-
-	}
-
-	public ArrayList<Job> getTechJobData(User user) {
+	
+	JobModel jobModel = new JobModel();
+	
+	User currentUser = UserDataSingleton.getInstance().getCurrentUser();
+	
+	public ArrayList<Job> getTechJobDataHandling() {
 		ArrayList<Job> techJobList = new ArrayList<>();
 
-		String query = "SELECT * FROM job WHERE UserID = ?";
+		String userrole = currentUser.getUserrole();
+		Integer userid = currentUser.getUserID();
 
-		PreparedStatement ps = con.prepareStatement(query);
+		if (userrole.equals("Admin")) {
+			techJobList = jobModel.getAllTechJobData();
+		}
 
-		try {
-			ps.setInt(1, user.getUserID());
-
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					Integer jid = rs.getInt("Job_ID");
-					Integer uid = rs.getInt("UserID");
-					Integer pid = rs.getInt("PC_ID");
-					String jstatus = rs.getString("JobStatus");
-
-					techJobList.add(new Job(jid, uid, pid, jstatus));
-				}
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		else if (userrole.equals("Computer Technician")) {
+			techJobList = jobModel.getTechJobData(userid);
 		}
 
 		return techJobList;
 	}
+	
+	public void addStaffJobHandling(JobManagementPageVariables jobManagementPageVariables) {
+		jobManagementPageVariables.addJobButton.setOnAction(e -> {
+			String userID = jobManagementPageVariables.userIDTF.getText();
+		    String pcID = jobManagementPageVariables.pcIDTF.getText();
+		    
+		    JobModel jobmodel = new JobModel();
+		    
+		    if (!jobmodel.checkUserRoleIsTechnician(userID)) {
+		    	jobManagementPageVariables.alert1.showAndWait();
+		        return;
+		    }
+		    
+		    if (!jobmodel.checkPcCondition(pcID) && !jobmodel.isPcReported(pcID)) {
+		    	jobManagementPageVariables.alert2.showAndWait();
+		        return;
+		    }
 
-	public void HandlingUpdateJobStatus(TechnicianJobPageVariables technicianJobPageVariables, User user) {
-		String checkQuery = "SELECT JobStatus FROM Job WHERE PC_ID = ?";
-		String updateQuery = "UPDATE Job SET JobStatus = 'Complete' WHERE PC_ID = ?";
-
-		String pcID = technicianJobPageVariables.pcIDTF.getText();
-
-		ArrayList<Job> techJobList = getTechJobData(user);
-
-		boolean jobExists = false;
-		for (Job job : techJobList) {
-			if (job.getPcID().toString().equals(pcID)) {
-				jobExists = true;
-				break;
-			}
-		}
-
-		if (jobExists) {
-			try {
-				PreparedStatement psSelect = con.prepareStatement(checkQuery);
+		    if (jobmodel.isTechnicianAlreadyDoingJob(pcID)) {
+		    	jobManagementPageVariables.alert3.showAndWait();
+		        return;
+		    }
+		    
+		    jobmodel.addStaffJob(userID, pcID);
+		    
+		    Main.setScene(new JobManagementPage().startJobManagementPage());
+		});
+	}
+	
+	public void amdinUpdateJobStatusHandling(JobManagementPageVariables jobManagementPageVariables) {
+		jobManagementPageVariables.updateStatusButton.setOnAction(e -> {
+		    String pcID = jobManagementPageVariables.pcID2TF.getText();
+		    String jobStatus = jobManagementPageVariables.jobStatusTF.getText();
+			
+			if (jobModel.isJobExists(pcID)) {
 				
-				psSelect.setString(1, pcID);
-				
-				ResultSet rs = psSelect.executeQuery();
-
-				if (rs.next()) {
-					String jobStatus = rs.getString("JobStatus");
-
-					if (jobStatus.equals("Complete")) {
-						
-						technicianJobPageVariables.alert2.showAndWait();
-						
-					} else {
-						PreparedStatement psUpdate = con.prepareStatement(updateQuery);
-
-						psUpdate.setString(1, pcID);
-
-						psUpdate.executeUpdate();
-					}
+				if (jobStatus.equals("Complete") || jobStatus.equals("UnComplete")) {
+					jobModel.adminUpdateJobStatus(pcID, jobStatus);
+					
+					Main.setScene(new JobManagementPage().startJobManagementPage());
 				}
-			} catch (SQLException e) {
-				// Log the exception or handle it appropriately
-				e.printStackTrace();
+				
+				else {
+					jobManagementPageVariables.alert5.showAndWait();
+				}
+				
 			}
-		}
+			
+			else {
+				jobManagementPageVariables.alert4.showAndWait();
+			}
+		});
+	}
 
-		else {
-			technicianJobPageVariables.alert1.showAndWait();
-		}
+	public void updateJobStatusHandling(TechnicianJobPageVariables technicianJobPageVariables) {
+		technicianJobPageVariables.completeButton.setOnAction(e -> {
+			String pcID = technicianJobPageVariables.pcIDTF.getText();
 
+			if (jobModel.isTechJobExists(currentUser.getUserID(), pcID)) {
+				
+				if (jobModel.isJobComplete(pcID)) {
+					technicianJobPageVariables.alert2.showAndWait();
+				} 
+				
+				else {
+					jobModel.updateJobStatus(pcID);
+					
+					Main.setScene(new TechnicianJobPage().startTechnicianJobPage());
+				}
+			}
+			else {
+				technicianJobPageVariables.alert1.showAndWait();
+			}
+		});
 	}
 
 }

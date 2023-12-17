@@ -1,75 +1,45 @@
 package controller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import database.Connect;
+import app.Main;
 import model.User;
+import model.UserDataSingleton;
+import model.UserModel;
+import view.ManageStaffPage;
 import view.ManageStaffPage.ManageStaffPageVariables;
 
 public class UserController {
-
-	Connect con = Connect.getInstance();
-
-	public ArrayList<User> getStaffData() {
-		ArrayList<User> staffList = new ArrayList<>();
-
-		String query = "SELECT `UserID`, `UserName`, `UserRole` FROM `user` WHERE `UserRole` != 'Customer'";
-
-		ResultSet rs = con.selectData(query);
-
-		try {
-			while (rs.next()) {
-				Integer id = rs.getInt("UserID");
-				String name = rs.getString("UserName");
-				String role = rs.getString("UserRole");
-				staffList.add(new User(id, name, null, null, role));
-			}
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+	
+	UserModel userModel = new UserModel();
+	
+	User currentUser = UserDataSingleton.getInstance().getCurrentUser();
+	
+	public ArrayList<User> getStaffDataHandling() {
+		ArrayList<User> staffList = userModel.getStaffData();
 
 		return staffList;
 	}
 
-	public void handlingUpdateStaff(ManageStaffPageVariables manageStaffPageVariables) {
+	public void updateStaffHandling(ManageStaffPageVariables manageStaffPageVariables) {
+		manageStaffPageVariables.submitButton.setOnAction(e -> {
+			String userID = manageStaffPageVariables.userIDTF.getText();
+			String newRole = manageStaffPageVariables.userRoleTF.getText();
 
-		String query = "UPDATE User SET UserRole = ? WHERE UserID = ?";
-
-		String userID = manageStaffPageVariables.userIDTF.getText();
-		String newRole = manageStaffPageVariables.userRoleTF.getText();
-
-		ArrayList<User> staffList = getStaffData();
-
-		boolean userExists = false;
-		for (User user : staffList) {
-			if (user.getUserID().toString().equals(userID)) {
-				userExists = true;
-				break;
-			}
-		}
-
-		if (userExists) {
-
-			if (newRole.equals("Admin") || newRole.equals("Operator") || newRole.equals("Computer Technician")) {
-				PreparedStatement ps = con.prepareStatement(query);
-
-				try {
-					ps.setString(1, newRole);
-					ps.setString(2, userID);
-
-					ps.executeUpdate();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
+			if (userModel.isUserExists(userID)) {
+				
+				if (newRole.equals("Admin") || newRole.equals("Operator") || newRole.equals("Computer Technician")) {
+					
+					userModel.updateStaff(newRole, userID);
+					
+					Main.setScene(new ManageStaffPage().startManageStaffPage());
+				} else {
+					manageStaffPageVariables.alert2.showAndWait();
 				}
-			} else {
-				manageStaffPageVariables.alert2.showAndWait();
-			}
 
-		} else {
-			manageStaffPageVariables.alert1.showAndWait();
-		}
+			} else {
+				manageStaffPageVariables.alert1.showAndWait();
+			}
+		});
 	}
 }
