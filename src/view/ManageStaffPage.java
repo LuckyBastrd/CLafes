@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import app.Main;
 import controller.UserController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,21 +19,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.User;
 
 public class ManageStaffPage {
+	
+	UserController userController = new UserController();
 
 	public class ManageStaffPageVariables {
-		Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
 		VBox titleVB, staffTableVB, contentVB;
-		TableView<User> staffTable;
+		public TableView<User> staffTable;
 		Label titleLabel, userIDLabel, userRoleLabel;
 		public TextField userIDTF, userRoleTF;
-		Button submitButton;
+		public Button submitButton;
 		public Alert alert1, alert2;
 	}
 
@@ -46,9 +47,7 @@ public class ManageStaffPage {
 
 		manageStaffPageVariables.staffTable.getColumns().addAll(idColumn, nameColumn, roleColumn);
 
-		UserController userController = new UserController();
-
-		ArrayList<User> staffList = userController.getStaffData();
+		ArrayList<User> staffList = userController.getStaffDataHandling();
 
 		for (User user : staffList) {
 			manageStaffPageVariables.staffTable.getItems().add(user);
@@ -68,7 +67,7 @@ public class ManageStaffPage {
 		manageStaffPageVariables.staffTableVB.setPadding(new Insets(20, 30, 30, 30));
 	}
 
-	private void initializeManageStaffPage(ManageStaffPageVariables manageStaffPageVariables, Stage stage, User user) {
+	private void initializeManageStaffPage(ManageStaffPageVariables manageStaffPageVariables) {
 		setStaffTableData(manageStaffPageVariables);
 
 		manageStaffPageVariables.borderPane = new BorderPane();
@@ -76,7 +75,7 @@ public class ManageStaffPage {
 		manageStaffPageVariables.contentVB = new VBox();
 		manageStaffPageVariables.gridPane = new GridPane();
 
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		manageStaffPageVariables.borderPane.setTop(menuBar);
 
 		manageStaffPageVariables.titleLabel = new Label("MANAGE STAFF");
@@ -116,32 +115,29 @@ public class ManageStaffPage {
 		manageStaffPageVariables.alert2 = new Alert(AlertType.ERROR);
 
 		manageStaffPageVariables.alert2.setTitle("Error");
-		manageStaffPageVariables.alert2.setContentText("Invalid new role !!!. Please choose between Admin, Operator, or Computer Technician(Case Sensitive).");
+		manageStaffPageVariables.alert2.setContentText("Invalid new role !!!. Please choose between Admin, Operator, or Computer Technician(Case Sensitive)");
 	}
 
-	private void UpdateStaffHandler(ManageStaffPageVariables manageStaffPageVariables, Stage stage, User user) {
-		UserController userController = new UserController();
-		
-		manageStaffPageVariables.submitButton.setOnAction(e -> {
-			userController.handlingUpdateStaff(manageStaffPageVariables);
-			new ManageStaffPage(stage, user);
-		});
+	private void UpdateStaffHandler(ManageStaffPageVariables manageStaffPageVariables) {
+		userController.updateStaffHandling(manageStaffPageVariables);
 	}
 
 	private void setStyle(ManageStaffPageVariables manageStaffPageVariables) {
 		manageStaffPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
+		manageStaffPageVariables.staffTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
 	
-	public ManageStaffPage(Stage stage, User user) {
+	
+	public Scene startManageStaffPage() {
 		ManageStaffPageVariables manageStaffPageVariables = new ManageStaffPageVariables();
-		initializeManageStaffPage(manageStaffPageVariables, stage, user);
+		
+		initializeManageStaffPage(manageStaffPageVariables);
 		initializeAlert(manageStaffPageVariables);
-		UpdateStaffHandler(manageStaffPageVariables, stage, user);
+		UpdateStaffHandler(manageStaffPageVariables);
 		setStyle(manageStaffPageVariables);
-
-		manageStaffPageVariables.stage = stage;
-		manageStaffPageVariables.stage.setResizable(false);
-		manageStaffPageVariables.stage.setScene(manageStaffPageVariables.scene);
-		manageStaffPageVariables.stage.show();
+		
+		Main.stage.setTitle("Manage Staff Page");
+		
+		return manageStaffPageVariables.scene;
 	}
 }

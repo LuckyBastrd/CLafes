@@ -3,6 +3,7 @@ package view;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import app.Main;
 import controller.TransactionController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,15 +16,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.Transaction;
-import model.User;
-import view.ViewAllReportPage.ViewAllReportPageVariables;
 
 public class ViewAllTrHistoryPage {
-
+	
+	TransactionController transactionController = new TransactionController();
+	
 	public class ViewAllTrHistoryPageVariables {
-		Stage stage;
 		Scene scene;
 		BorderPane borderPane;
 		GridPane gridPane;
@@ -32,7 +31,7 @@ public class ViewAllTrHistoryPage {
 		Label titleLabel;
 	}
 
-	private void setAllTransactionTableData(ViewAllTrHistoryPageVariables viewAllTrHistoryPageVariables, User user) {
+	private void setAllTransactionTableData(ViewAllTrHistoryPageVariables viewAllTrHistoryPageVariables) {
 		viewAllTrHistoryPageVariables.trTable = new TableView<>();
 		viewAllTrHistoryPageVariables.trTableVB = new VBox();
 
@@ -47,11 +46,9 @@ public class ViewAllTrHistoryPage {
 		viewAllTrHistoryPageVariables.trTable.getColumns().addAll(trIDColumn, staffIDColumn, staffNameColumn,
 				trDateColumn, pcIDColumn, custNameColumn, bookDateColumn);
 		
-		TransactionController transactionController = new TransactionController();
+		ArrayList<Transaction> allTransactionList = transactionController.getTrHistoryDataHandling();
 		
-		ArrayList<Transaction> allallTransactionList = transactionController.getAllTransactionData(user);
-		
-		for (Transaction transaction : allallTransactionList) {
+		for (Transaction transaction : allTransactionList) {
 			viewAllTrHistoryPageVariables.trTable.getItems().add(transaction);
 		}
 		
@@ -74,14 +71,14 @@ public class ViewAllTrHistoryPage {
 		viewAllTrHistoryPageVariables.trTableVB.setPadding(new Insets(20, 30, 30, 30));
 	}
 	
-	private void initializeViewAllTrHistoryPage(ViewAllTrHistoryPageVariables viewAllTrHistoryPageVariables, Stage stage, User user) {
-		setAllTransactionTableData(viewAllTrHistoryPageVariables, user);
+	private void initializeViewAllTrHistoryPage(ViewAllTrHistoryPageVariables viewAllTrHistoryPageVariables) {
+		setAllTransactionTableData(viewAllTrHistoryPageVariables);
 		
 		viewAllTrHistoryPageVariables.borderPane = new BorderPane();
 		viewAllTrHistoryPageVariables.titleVB = new VBox();
 		viewAllTrHistoryPageVariables.gridPane = new GridPane();
 		
-		MenuBar menuBar = MenuBarBuilder.createMenuBar(stage, user);
+		MenuBar menuBar = MenuBarBuilder.createMenuBar();
 		viewAllTrHistoryPageVariables.borderPane.setTop(menuBar);
 		
 		viewAllTrHistoryPageVariables.titleLabel = new Label("ALL TRANSACTION HISTORY");
@@ -101,17 +98,16 @@ public class ViewAllTrHistoryPage {
 		viewAllTrHistoryPageVariables.titleLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 35px;");
 		viewAllTrHistoryPageVariables.trTable.getColumns().forEach(column -> column.setStyle("-fx-alignment: CENTER;"));
 	}
-	
-	public ViewAllTrHistoryPage(Stage stage, User user) {
+
+	public Scene startViewAllTrHistoryPage() {
 		ViewAllTrHistoryPageVariables viewAllTrHistoryPageVariables = new ViewAllTrHistoryPageVariables();
 		
-		initializeViewAllTrHistoryPage(viewAllTrHistoryPageVariables, stage, user);
+		initializeViewAllTrHistoryPage(viewAllTrHistoryPageVariables);
 		setStyle(viewAllTrHistoryPageVariables);
 		
-		viewAllTrHistoryPageVariables.stage = stage;
-		viewAllTrHistoryPageVariables.stage.setResizable(false);
-		viewAllTrHistoryPageVariables.stage.setScene(viewAllTrHistoryPageVariables.scene);
-		viewAllTrHistoryPageVariables.stage.show();
+		Main.stage.setTitle("Transaction History Page");
+		
+		return viewAllTrHistoryPageVariables.scene;
 	}
 	
 }
