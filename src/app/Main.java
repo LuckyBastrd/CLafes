@@ -3,7 +3,7 @@ package app;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.LoginPage;
+import view.RegisterPage;
 
 public class Main extends Application {
 	
@@ -21,7 +21,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		stage = primaryStage;
-		Main.setScene(new LoginPage().startLoginPage());
+		Main.setScene(new RegisterPage().startRegisterPage());
 		
 		stage.setResizable(false);
 		

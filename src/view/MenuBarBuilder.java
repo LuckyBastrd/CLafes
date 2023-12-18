@@ -1,19 +1,19 @@
 package view;
 
 import app.Main;
+import database.UserDataSingleton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import model.User;
-import model.UserDataSingleton;
 
 public class MenuBarBuilder {
 	
-	static User currentUser = UserDataSingleton.getInstance().getCurrentUser();
-	
     public static MenuBar createMenuBar() {
+    	User currentUser = UserDataSingleton.getInstance().getCurrentUser();
+    	
         MenuBar menuBar = new MenuBar();
         
         Menu menu = new Menu("Menu");
@@ -56,40 +56,52 @@ public class MenuBarBuilder {
     private static void addAdminMenuItems(Menu menu) {
         menu.getItems().addAll(
                 createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
-                createMenuItem("View All PC", null),
                 createMenuItem("View All Staff", e ->  Main.setScene(new ManageStaffPage().startManageStaffPage())),
                 createMenuItem("PC Management", null),
                 createMenuItem("Job Management", e -> Main.setScene(new JobManagementPage().startJobManagementPage())),
                 createMenuItem("Transaction History", e -> Main.setScene(new ViewAllTrHistoryPage().startViewAllTrHistoryPage())),
-                createMenuItem("View All Report", e -> Main.setScene(new ViewAllReportPage().startViewAllReportPageVariables()))
+                createMenuItem("View All Report", e -> Main.setScene(new ViewAllReportPage().startViewAllReportPageVariables())),
+                createMenuItem("Log Out", e -> {
+                	UserDataSingleton.getInstance().clearUserData();
+                    Main.setScene(new LoginPage().startLoginPage());
+                })
         );
     }
 
     private static void addCustomerMenuItems(Menu menu) {
         menu.getItems().addAll(
         		createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
-                createMenuItem("View All PC", null),
-                createMenuItem("Transaction History", null),
+                createMenuItem("Transaction History", e -> Main.setScene(new ViewCustomerTrHistoryPage().startViewCustomerTrHistoryPage())),
                 createMenuItem("Book PC", null),
-                createMenuItem("Make Report", e -> Main.setScene(new MakeReportPage().startMakeReportPage()))
+                createMenuItem("Make Report", e -> Main.setScene(new MakeReportPage().startMakeReportPage())),
+                createMenuItem("Log Out", e -> {
+                	UserDataSingleton.getInstance().clearUserData();
+                    Main.setScene(new LoginPage().startLoginPage());
+                })
         );
     }
 
     private static void addOperatorMenuItems(Menu menu) {
         menu.getItems().addAll(
         		createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
-                createMenuItem("View All PC", null),
                 createMenuItem("Make Report", e -> Main.setScene(new MakeReportPage().startMakeReportPage())),
                 createMenuItem("Booked PC", null),
-                createMenuItem("Transfer PC", null)
+                createMenuItem("Transfer PC", null),
+                createMenuItem("Log Out", e -> {
+                	UserDataSingleton.getInstance().clearUserData();
+                    Main.setScene(new LoginPage().startLoginPage());
+                })
         );
     }
 
     private static void addTechnicianMenuItems(Menu menu) {
         menu.getItems().addAll(
         		createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
-                createMenuItem("View All PC", null),
-                createMenuItem("View All Job", e -> Main.setScene(new TechnicianJobPage().startTechnicianJobPage()))
+                createMenuItem("View All Job", e -> Main.setScene(new TechnicianJobPage().startTechnicianJobPage())),
+                createMenuItem("Log Out", e -> {
+                	UserDataSingleton.getInstance().clearUserData();
+                    Main.setScene(new LoginPage().startLoginPage());
+                })
         );
     }
 }

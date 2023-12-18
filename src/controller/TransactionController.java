@@ -2,10 +2,10 @@ package controller;
 
 import java.util.ArrayList;
 
+import database.UserDataSingleton;
 import model.Transaction;
 import model.TransactionModel;
 import model.User;
-import model.UserDataSingleton;
 
 public class TransactionController {
 	
