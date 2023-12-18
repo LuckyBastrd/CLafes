@@ -3,10 +3,10 @@ package controller;
 import java.util.ArrayList;
 
 import app.Main;
+import database.UserDataSingleton;
 import model.Job;
 import model.JobModel;
 import model.User;
-import model.UserDataSingleton;
 import view.TechnicianJobPage;
 import view.JobManagementPage;
 import view.JobManagementPage.JobManagementPageVariables;

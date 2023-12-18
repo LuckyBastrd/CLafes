@@ -1,4 +1,6 @@
-package model;
+package database;
+
+import model.User;
 
 public class UserDataSingleton {
     private static UserDataSingleton instance;
@@ -17,5 +19,9 @@ public class UserDataSingleton {
 
     public User getCurrentUser() {
         return currentUser;
+    }
+    
+    public void clearUserData() {
+        currentUser = null;
     }
 }

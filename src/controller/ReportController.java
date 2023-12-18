@@ -3,10 +3,10 @@ package controller;
 import java.util.ArrayList;
 
 import app.Main;
+import database.UserDataSingleton;
 import model.Report;
 import model.ReportModel;
 import model.User;
-import model.UserDataSingleton;
 import view.MakeReportPage;
 import view.MakeReportPage.MakeReportPageVariables;
 

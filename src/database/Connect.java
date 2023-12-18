@@ -70,4 +70,17 @@ public class Connect {
 		
 		return ps;
 	}
+	
+	public boolean checkUsername(String username) throws SQLException{
+		ps = con.prepareStatement("SELECT EXISTS(SELECT 1 FROM User WHERE UserName = ?)");
+		ps.setString(1, username);
+		
+		try(ResultSet rs = ps.executeQuery()){
+			if(rs.next()) {
+				return rs.getBoolean(1);
+			}
+		}
+		
+		return false;
+	}
 }
