@@ -86,7 +86,7 @@ public class MenuBarBuilder {
         		createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
                 createMenuItem("Make Report", e -> Main.setScene(new MakeReportPage().startMakeReportPage())),
                 createMenuItem("Booked PC", null),
-                createMenuItem("Assign User To Other PC", null),
+                createMenuItem("Assign User To Other PC", e -> Main.setScene(new AssignUserPage().startAssignUserPage())),
                 createMenuItem("Log Out", e -> {
                 	UserDataSingleton.getInstance().clearUserData();
                     Main.setScene(new LoginPage().startLoginPage());
