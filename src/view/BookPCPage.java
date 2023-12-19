@@ -115,7 +115,7 @@ public class BookPCPage {
 		bookPCPageVariables.alert1 = new Alert(AlertType.ERROR);
 
 		bookPCPageVariables.alert1.setTitle("Error");
-		bookPCPageVariables.alert1.setContentText("PC ID Does Not Exist!!!");
+		bookPCPageVariables.alert1.setContentText("PC ID Does Not Exist !!!");
 		
 		bookPCPageVariables.alert2 = new Alert(AlertType.ERROR);
 

@@ -1,6 +1,5 @@
 package controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -14,10 +13,13 @@ import view.BookPCPage;
 import view.AssignUserPage;
 import view.AssignUserPage.AssignUserPageVariables;
 import view.BookPCPage.BookPCPageVariables;
+import view.ViewPCBookedPage;
+import view.ViewPCBookedPage.ViewPCBookedPageVariables;
 
 public class PCBookController {
 
 	PCBookModel pcBookModel = new PCBookModel();
+	
 	PCModel pcModel = new PCModel();
 
 	User currentUser = UserDataSingleton.getInstance().getCurrentUser();
@@ -76,6 +78,43 @@ public class PCBookController {
 			pcBookModel.assignUser(pcid, bookid);
 			
 			Main.setScene(new AssignUserPage().startAssignUserPage());
+		});
+	}
+	
+	public void cancelBookHandling(ViewPCBookedPageVariables viewPCBookedPageVariables) {
+		viewPCBookedPageVariables.cancelButton.setOnAction(e -> {
+			String bookid = viewPCBookedPageVariables.cancelBookIDTF.getText();
+			LocalDate todayDate = LocalDate.now();
+			
+			if (!pcBookModel.isBookedExists(bookid)) {
+				viewPCBookedPageVariables.alert1.showAndWait();
+				return;
+			}
+			
+			if (pcBookModel.isBookOverYet(bookid, todayDate)) {
+				viewPCBookedPageVariables.alert2.showAndWait();
+				return;
+			}
+			
+			pcBookModel.cancelBook(bookid);
+			
+			Main.setScene(new ViewPCBookedPage().startViewPCBookedPage());
+		});
+	}
+	
+	public void finishBookHandling(ViewPCBookedPageVariables viewPCBookedPageVariables) {
+		viewPCBookedPageVariables.finishButton.setOnAction(e -> {
+			java.sql.Date bookDate = java.sql.Date.valueOf(viewPCBookedPageVariables.bookDateDP.getValue());
+			LocalDate todayDate = LocalDate.now();
+			
+			if (!pcBookModel.checkBookDate(bookDate, todayDate)) {
+				viewPCBookedPageVariables.alert4.showAndWait();
+				return;
+			}
+			
+			pcBookModel.finishBook(currentUser.getUserID(), bookDate);
+
+			Main.setScene(new ViewPCBookedPage().startViewPCBookedPage());
 		});
 	}
 

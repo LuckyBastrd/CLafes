@@ -8,11 +8,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import controller.PCController;
+import controller.TransactionController;
 import database.Connect;
 
 public class PCBookModel {
 
 	Connect con = Connect.getInstance();
+
+	TransactionController transactionController = new TransactionController();
 
 	public ArrayList<PCBook> getAllPCBookData() {
 		String query = "SELECT * FROM pcbook";
@@ -105,10 +108,10 @@ public class PCBookModel {
 			return false;
 		}
 	}
-	
+
 	public void assignUser(String pcid, String bookid) {
 		String query = "UPDATE `pcbook` SET `PC_ID` = ? WHERE BookID = ?";
-		
+
 		PreparedStatement ps = con.prepareStatement(query);
 
 		try {
@@ -120,7 +123,7 @@ public class PCBookModel {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	public boolean isBookedExists(String bookid) {
 
 		ArrayList<PCBook> bookedPCList = getAllPCBookData();
@@ -163,6 +166,128 @@ public class PCBookModel {
 			e.printStackTrace();
 
 			return false;
+		}
+	}
+
+	public void cancelBook(String bookid) {
+		String query = "DELETE FROM `pcbook` WHERE BookID = ?";
+
+		PreparedStatement ps = con.prepareStatement(query);
+
+		try {
+			ps.setString(1, bookid);
+
+			ps.executeUpdate();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	public boolean isBookOverYet(String bookid, LocalDate todayDate) {
+		String checkBookDate = "SELECT * FROM PCBook WHERE BookID = ?";
+
+		PreparedStatement psBookDate = con.prepareStatement(checkBookDate);
+
+		try {
+			psBookDate.setString(1, bookid);
+
+			ResultSet rsDate = psBookDate.executeQuery();
+
+			boolean isDateOver = false;
+			while (rsDate.next()) {
+				Date bdate = rsDate.getDate("BookedDate");
+
+				if (bdate.toLocalDate().isBefore(todayDate)) {
+					isDateOver = true;
+					break;
+				}
+			}
+
+			return isDateOver;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			return false;
+		}
+	}
+
+	public void finishBook(Integer staffid, java.sql.Date bookDate) {
+		ArrayList<PCBook> pcBookList = getBookedPCByDate(bookDate);
+		
+		deletePCBookList(bookDate);
+
+		transactionController.addTransactionHandling(pcBookList);
+	}
+
+	public boolean checkBookDate(java.sql.Date bookDate, LocalDate todayDate) {
+		String checkBookDate = "SELECT * FROM PCBook WHERE BookedDate = ?";
+
+		PreparedStatement ps = con.prepareStatement(checkBookDate);
+
+		try {
+			ps.setDate(1, bookDate);
+
+			ResultSet rs = ps.executeQuery();
+
+			boolean isDateExists = false;
+			while (rs.next()) {
+				Date bdate = rs.getDate("BookedDate");
+
+				if (bdate.toLocalDate().isBefore(todayDate)) {
+					isDateExists = true;
+					break;
+				}
+			}
+
+			return isDateExists;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			return false;
+		}
+	}
+
+	public ArrayList<PCBook> getBookedPCByDate(java.sql.Date bookDate) {
+		String query = "SELECT * FROM PCBook WHERE BookedDate = ?";
+
+		PreparedStatement ps = con.prepareStatement(query);
+
+		ArrayList<PCBook> pcBookList = new ArrayList<>();
+
+		try {
+			ps.setDate(1, bookDate);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Integer bid = rs.getInt("BookID");
+				Integer pid = rs.getInt("PC_ID");
+				Integer uid = rs.getInt("UserID");
+				Date bdate = rs.getDate("BookedDate");
+
+				pcBookList.add(new PCBook(bid, pid, uid, bdate));
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
+		return pcBookList;
+	}
+
+	public void deletePCBookList(java.sql.Date bookDate) {
+		String deleteQuery = "DELETE FROM PCBook WHERE BookedDate = ?";
+
+		PreparedStatement ps = con.prepareStatement(deleteQuery);
+
+		try {
+			ps.setDate(1, bookDate);
+
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

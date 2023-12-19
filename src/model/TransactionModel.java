@@ -12,21 +12,23 @@ public class TransactionModel {
 	
 	Connect con = Connect.getInstance();
 	
-	public ArrayList<Transaction> getAllTrHistoryData() {
-		String query ="SELECT " + 
+	public ArrayList<Transaction> getAllTrHistoryData() {	
+		String query = "SELECT " + 
 				"    th.TransactionID AS transactionID, " + 
 				"    th.StaffID AS staffID, " + 
-				"    staff.UserName AS staffName," + 
+				"    staff.UserName AS staffName, " + 
 				"    th.TransactionDate AS transactiondate, " + 
-				"    pb.PC_ID AS pcID, " + 
+				"    td.PC_ID AS pcID, " + 
 				"    cust.UserName AS customerName, " + 
-				"    pb.BookedDate AS bookeddate " + 
+				"    td.BookedDate AS bookeddate " + 
 				"FROM " + 
 				"    transactionheader th " + 
-				"JOIN transactiondetail td ON td.TransactionID = th.TransactionID " + 
-				"JOIN user staff ON staff.UserID = th.StaffID " + 
-				"JOIN pcbook pb ON pb.BookID = td.BookID " + 
-				"JOIN user cust ON cust.UserID = pb.UserID;";
+				"JOIN " + 
+				"    transactiondetail td ON td.TransactionID = th.TransactionID " + 
+				"JOIN " + 
+				"    user staff ON staff.UserID = th.StaffID " + 
+				"JOIN " + 
+				"    user cust ON cust.UserID = td.UserID";
 		
 		ArrayList<Transaction> allTrHistoryList = new ArrayList<>();
 		
@@ -52,16 +54,16 @@ public class TransactionModel {
 		return allTrHistoryList;
 	}
 	
-	public ArrayList<Transaction> getCustTrHistoryData(Integer userid) {
-		String query ="SELECT " + 
+	public ArrayList<Transaction> getCustTrHistoryData(Integer userid) {	
+		String query = "SELECT " + 
 				"    td.TransactionID AS transactionID, " + 
-				"    pb.PC_ID AS pcID, " + 
+				"    td.PC_ID AS pcID, " + 
 				"    cust.UserName AS customerName, " + 
-				"    pb.BookedDate AS bookeddate " + 
-				"FROM transactiondetail td " + 
-				"JOIN pcbook pb ON pb.BookID = td.BookID " + 
-				"JOIN user cust on cust.UserID = pb.UserID " + 
-				"WHERE pb.UserID = ?;";
+				"    td.BookedDate AS bookeddate " + 
+				"FROM " + 
+				"    transactiondetail td " + 
+				"    JOIN user cust ON cust.UserID = td.UserID " +
+				"    WHERE td.UserID = ?";
 		
 		ArrayList<Transaction> custTrHistoryList = new ArrayList<>();
 		
@@ -95,25 +97,32 @@ public class TransactionModel {
 		String thQuery = "INSERT INTO `transactionheader` (`TransactionID`, `StaffID`, `TransactionDate`) VALUES (NULL, ?, ?)";
 		PreparedStatement thPs = con.prepareStatement(thQuery);
 		
+		String selectLastIdQuery = "SELECT LAST_INSERT_ID() AS TransactionID";
+		PreparedStatement selectPs = con.prepareStatement(selectLastIdQuery);
+		
 		try {
 			thPs.setInt(1, staffID);
 			thPs.setDate(2, new Date(System.currentTimeMillis()));
-			ResultSet thRs = thPs.executeQuery();
-			Integer transactionId = -1;
+			
+			thPs.execute();
+			
+			ResultSet thRs = selectPs.executeQuery();
+			Integer transactionId = null;
 			
 			if(thRs.next()) {
-				transactionId = thRs.getInt("transactionID");
+				transactionId = thRs.getInt("TransactionID");
 			} 
 			
-			if(transactionId == -1) {
-				return;
-			}
-			
 			for (PCBook pcBook : pcBooks) {
-				String tdQuery = "INSERT INTO `transactiondetail` (`TransactionID`, `BookID`) VALUES (?, ?)";
+				String tdQuery = "INSERT INTO `transactiondetail` (`TransactionID`, `PC_ID`, `UserID`, `BookedDate`) VALUES (?, ?, ?, ?)";
+				
 				PreparedStatement tdPs = con.prepareStatement(tdQuery);
+				
 				tdPs.setInt(1, transactionId);
-				tdPs.setInt(2, pcBook.getBookID());
+				tdPs.setInt(2, pcBook.getPcID());
+				tdPs.setInt(3, pcBook.getUserID());
+				tdPs.setDate(4, pcBook.getBookedDate());
+				
 				tdPs.execute();
 			}
 			
