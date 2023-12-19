@@ -90,4 +90,38 @@ public class TransactionModel {
 		return custTrHistoryList;
 	}
 	
+	public void addTransaction(ArrayList<PCBook> pcBooks, Integer staffID) {
+		
+		String thQuery = "INSERT INTO `transactionheader` (`TransactionID`, `StaffID`, `TransactionDate`) VALUES (NULL, ?, ?)";
+		PreparedStatement thPs = con.prepareStatement(thQuery);
+		
+		try {
+			thPs.setInt(1, staffID);
+			thPs.setDate(2, new Date(System.currentTimeMillis()));
+			ResultSet thRs = thPs.executeQuery();
+			Integer transactionId = -1;
+			
+			if(thRs.next()) {
+				transactionId = thRs.getInt("transactionID");
+			} 
+			
+			if(transactionId == -1) {
+				return;
+			}
+			
+			for (PCBook pcBook : pcBooks) {
+				String tdQuery = "INSERT INTO `transactiondetail` (`TransactionID`, `BookID`) VALUES (?, ?)";
+				PreparedStatement tdPs = con.prepareStatement(tdQuery);
+				tdPs.setInt(1, transactionId);
+				tdPs.setInt(2, pcBook.getBookID());
+				tdPs.execute();
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
 }
