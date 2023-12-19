@@ -40,24 +40,22 @@ public class JobController {
 			String userID = jobManagementPageVariables.userIDTF.getText();
 		    String pcID = jobManagementPageVariables.pcIDTF.getText();
 		    
-		    JobModel jobmodel = new JobModel();
-		    
-		    if (!jobmodel.checkUserRoleIsTechnician(userID)) {
+		    if (!jobModel.checkUserRoleIsTechnician(userID)) {
 		    	jobManagementPageVariables.alert1.showAndWait();
 		        return;
 		    }
 		    
-		    if (!jobmodel.checkPcCondition(pcID) && !jobmodel.isPcReported(pcID)) {
+		    if (!jobModel.checkPcCondition(pcID) && !jobModel.isPcReported(pcID)) {
 		    	jobManagementPageVariables.alert2.showAndWait();
 		        return;
 		    }
 
-		    if (jobmodel.isTechnicianAlreadyDoingJob(pcID)) {
+		    if (jobModel.isTechnicianAlreadyDoingJob(pcID)) {
 		    	jobManagementPageVariables.alert3.showAndWait();
 		        return;
 		    }
 		    
-		    jobmodel.addStaffJob(userID, pcID);
+		    jobModel.addStaffJob(userID, pcID);
 		    
 		    Main.setScene(new JobManagementPage().startJobManagementPage());
 		});

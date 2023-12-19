@@ -57,7 +57,7 @@ public class MenuBarBuilder {
         menu.getItems().addAll(
                 createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
                 createMenuItem("View All Staff", e ->  Main.setScene(new ManageStaffPage().startManageStaffPage())),
-                createMenuItem("PC Management", null),
+                createMenuItem("PC Management", e -> Main.setScene(new PCManagementPage().startPCManagementPageVariables())),
                 createMenuItem("Job Management", e -> Main.setScene(new JobManagementPage().startJobManagementPage())),
                 createMenuItem("Transaction History", e -> Main.setScene(new ViewAllTrHistoryPage().startViewAllTrHistoryPage())),
                 createMenuItem("View All Report", e -> Main.setScene(new ViewAllReportPage().startViewAllReportPageVariables())),
@@ -72,7 +72,7 @@ public class MenuBarBuilder {
         menu.getItems().addAll(
         		createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
                 createMenuItem("Transaction History", e -> Main.setScene(new ViewCustomerTrHistoryPage().startViewCustomerTrHistoryPage())),
-                createMenuItem("Book PC", null),
+                createMenuItem("Book PC", e -> Main.setScene(new BookPCPage().startBookPCPage())),
                 createMenuItem("Make Report", e -> Main.setScene(new MakeReportPage().startMakeReportPage())),
                 createMenuItem("Log Out", e -> {
                 	UserDataSingleton.getInstance().clearUserData();
@@ -86,7 +86,7 @@ public class MenuBarBuilder {
         		createMenuItem("Home Page", e -> Main.setScene(new HomePage().startHomePage())),
                 createMenuItem("Make Report", e -> Main.setScene(new MakeReportPage().startMakeReportPage())),
                 createMenuItem("Booked PC", null),
-                createMenuItem("Transfer PC", null),
+                createMenuItem("Assign User To Other PC", null),
                 createMenuItem("Log Out", e -> {
                 	UserDataSingleton.getInstance().clearUserData();
                     Main.setScene(new LoginPage().startLoginPage());

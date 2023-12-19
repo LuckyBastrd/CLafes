@@ -89,6 +89,7 @@ public class JobManagementPage {
 		
 		//Add Job Section
 		jobManagementPageVariables.addJobTitle = new Label("Add Job");
+		jobManagementPageVariables.addJobTitle.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 20px;");
 		
 		jobManagementPageVariables.userIDLabel = new Label("User ID");
 		jobManagementPageVariables.userIDTF = new TextField();
@@ -101,6 +102,7 @@ public class JobManagementPage {
 		
 		//Update Job Status Section
 		jobManagementPageVariables.updateStatusLabel = new Label("Update Job Status");
+		jobManagementPageVariables.updateStatusLabel.setStyle("-fx-font-weight: bold;" + "-fx-font-family: Serif;" + "-fx-font-size: 20px;");
 		
 		jobManagementPageVariables.pcID2Label = new Label("PC ID");
 		jobManagementPageVariables.pcID2TF = new TextField();
@@ -146,7 +148,7 @@ public class JobManagementPage {
 		jobManagementPageVariables.alert2 = new Alert(AlertType.ERROR);
 
 		jobManagementPageVariables.alert2.setTitle("Error");
-		jobManagementPageVariables.alert2.setContentText("PC ID Is In Usable Condition or Is Not Reported Yet!!! (Please Check It First)");
+		jobManagementPageVariables.alert2.setContentText("PC ID Is In Usable Condition or Is Not Reported Yet !!! (Please Check It First)");
 		
 		jobManagementPageVariables.alert3 = new Alert(AlertType.ERROR);
 		
@@ -156,7 +158,7 @@ public class JobManagementPage {
 		jobManagementPageVariables.alert4 = new Alert(AlertType.ERROR);
 
 		jobManagementPageVariables.alert4.setTitle("Error");
-		jobManagementPageVariables.alert4.setContentText("PC ID Does Not Exist In The Job List!!");
+		jobManagementPageVariables.alert4.setContentText("PC ID Does Not Exist In The Job List !!!");
 		
 		jobManagementPageVariables.alert5 = new Alert(AlertType.ERROR);
 		
@@ -164,7 +166,7 @@ public class JobManagementPage {
 		jobManagementPageVariables.alert5.setContentText("Invalid job status !!!. Please choose between Complete or UnComplete(Case Sensitive)");
 	}
 	
-	private void buttonHandler(JobManagementPageVariables jobManagementPageVariables) {
+	private void updateJobStatusHandler(JobManagementPageVariables jobManagementPageVariables) {
 		jobController.addStaffJobHandling(jobManagementPageVariables);
 		
 		jobController.amdinUpdateJobStatusHandling(jobManagementPageVariables);
@@ -182,7 +184,7 @@ public class JobManagementPage {
 		
 		initializeJobListPage(jobManagementPageVariables);
 		initializeAlert(jobManagementPageVariables);
-		buttonHandler(jobManagementPageVariables);
+		updateJobStatusHandler(jobManagementPageVariables);
 		setStyle(jobManagementPageVariables);
 		
 		Main.stage.setTitle("Jog Management Page");
